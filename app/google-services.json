@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "319903703008",
+    "firebase_url": "https://hams-group-20-default-rtdb.firebaseio.com",
+    "project_id": "hams-group-20",
+    "storage_bucket": "hams-group-20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319903703008:android:bb8c07e910e324e396d585",
+        "android_client_info": {
+          "package_name": "com.example.hams"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjxq05uaUUXhCU5PLFkIvEu_I8h6uV2_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
