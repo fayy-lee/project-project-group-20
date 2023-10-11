@@ -1,3 +1,4 @@
+package com.example.hams;
 public class Admin extends User{
 
     //one specific set of Admin credentials
