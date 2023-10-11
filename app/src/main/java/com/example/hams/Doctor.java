@@ -1,3 +1,5 @@
+package com.example.hams;
+
 public class Doctor extends User{
 
     public Doctor(String user, String pass) {
