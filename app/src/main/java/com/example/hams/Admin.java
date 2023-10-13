@@ -8,7 +8,7 @@ public class Admin extends User{
     public Admin() {
         super(userName, passWord);
     }
-   
+
     public String getUser(){
         return userName;
     }
