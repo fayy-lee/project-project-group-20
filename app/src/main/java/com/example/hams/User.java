@@ -1,3 +1,4 @@
+package com.example.hams;
 // parent class to log in/out all types of users
 
 public class User{
