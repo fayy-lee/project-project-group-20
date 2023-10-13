@@ -5,13 +5,20 @@ public class User{
     private String userName; //username and password are the same
     private String passWord;
     private boolean loggedIn; //variable to check if user is already logged in (might be useless lol idk)
+    private boolean active;
 
     public User(String user, String pass){
         userName = user;
         passWord = pass;
+        active = true; //THIS SHOULD CHANGE TO FALSE ONCE ADMIN CAN APPROVE PPL
     }
 
     public boolean login(String user, String pass){
+        //check if the account is activated
+        if(!active){
+            System.out.println("Account pending approval. Unable to login at this time.");
+            return false;
+        }
         if(user.equals(userName) && pass.equals(passWord)){
             System.out.println("Welcome "+userName);
             loggedIn = true;
@@ -25,6 +32,10 @@ public class User{
 
     public boolean isLoggedIn(){
         return loggedIn;
+    }
+
+    public boolean isActive(){
+        return active;
     }
 
 
