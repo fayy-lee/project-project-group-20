@@ -17,5 +17,9 @@ public class Admin extends User{
         return passWord;
     }
 
+    public void approve(User user){
+        user.active = true;
+    }
+
     
 }
