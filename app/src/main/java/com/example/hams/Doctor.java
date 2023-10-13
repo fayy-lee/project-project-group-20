@@ -3,29 +3,19 @@ package com.example.hams;
 public class Doctor extends User{
     String firstName;
     String lastName;
-    String email;
-    String password;
     String phoneNumber;
     String address;
     String employeeNumber;
     String[] specialties;
 
 
-    public Doctor(String user, String pass) {
+    public Doctor(String user, String pass, String first, String last,
+                String phone, String address,
+                String number, String[] specialties) {
         super(user, pass);
-        //automaticall set to active, WILL CHANGE LATER
-        
-    }
-
-    public void register(String first, String last, String email,
-                        String pass, String phone, String address,
-                        String number, String[] specialties)
-        {
-            // fully initialize the doctor's attributes
+        // fully initialize the doctor's attributes
             this.firstName = first;
             this.lastName = last;
-            this.email = email;
-            this.password = pass;
             this.phoneNumber = phone;
             this.address = address;
             this.employeeNumber = number;
@@ -33,7 +23,10 @@ public class Doctor extends User{
 
             //later send a message to the admin to approve the registration and activate the account
             active = true;
-        }
+            //automatically set to active, WILL CHANGE LATER
+        
+    }
+
                     
                         
     
