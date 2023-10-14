@@ -22,7 +22,7 @@ public class Patient extends User{
         this.healthCard = healthCard;
 
         //will be used in the future when seeking approval from Admin
-        boolean active = true;
+        setActive(true);
     }
     
 

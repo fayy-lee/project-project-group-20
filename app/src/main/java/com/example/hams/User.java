@@ -39,6 +39,10 @@ public class User{
         return active;
     }
 
+    public void setActive(boolean value){
+        active = value;
+    }
+
 
 
     public void logout(){

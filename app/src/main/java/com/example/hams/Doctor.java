@@ -22,7 +22,7 @@ public class Doctor extends User{
             this.specialties = specialties;
 
             //later send a message to the admin to approve the registration and activate the account
-            active = true;
+            setActive(true);
             //automatically set to active, WILL CHANGE LATER
         
     }
