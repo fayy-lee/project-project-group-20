@@ -1,14 +1,14 @@
 package com.example.hams;
 public class Patient extends User{
 
-    string firstName;
-    string lastName;
-    string emailAddress;
-    string phoneNo;
-    string address;
-    string healthCard;
+    String firstName;
+    String lastName;
+    String emailAddress;
+    String phoneNo;
+    String address;
+    String healthCard;
 
-    public Patient(string firstName, string lastName, string emailAddress, string pass, string user, string phoneNo, string address, string healthCard){
+    public Patient(String firstName, String lastName, String emailAddress, String pass, String user, String phoneNo, String address, String healthCard){
         
         //calling superclass User's constructor
         super(user, pass); 
