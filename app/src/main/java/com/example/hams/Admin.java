@@ -8,13 +8,17 @@ public class Admin extends User{
     public Admin() {
         super(userName, passWord);
     }
-   
+
     public String getUser(){
         return userName;
     }
 
     public String getPass(){
         return passWord;
+    }
+
+    public void approve(User user){
+        user.active = true;
     }
 
     
