@@ -1,4 +1,13 @@
 package com.example.hams;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 public class Patient extends User{
 
     String firstName;
@@ -24,6 +33,4 @@ public class Patient extends User{
         //will be used in the future when seeking approval from Admin
         setActive(true);
     }
-    
-
 }

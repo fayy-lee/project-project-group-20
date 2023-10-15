@@ -1,31 +1,57 @@
 package com.example.hams;
 
-
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
+import android.util.Pair;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-    //initialize the databasse connection and the references (2 so that we don't just override one node
-    FirebaseDatabase database;
-    DatabaseReference rootRef, newRef;
+
+    private static int SPLASH_SCREEN = 5000;
+    //initialize the database connection and the references (2 so that we don't just override one node
+    //FirebaseDatabase database;
+    //DatabaseReference rootRef, newRef;
+    // animations
+    // variables
+    Animation topAnim, bottomAnim;
+    ImageView image;
+    TextView logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
+        bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
 
-        database = FirebaseDatabase.getInstance();
-        rootRef = database.getReference();
+        // hooks
+        image = findViewById(R.id.imageView);
+        logo = findViewById(R.id.textView);
+
+        image.setAnimation(topAnim);
+        logo.setAnimation(bottomAnim);
+
+        long SplashScreen;
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(MainActivity.this,Dashboard.class);
+            Pair[] pairs = new Pair[2];
+            pairs[0] = new Pair<View,String>(image, "logo_image");
+            pairs[1] = new Pair<View,String>(logo, "logo_text");
+
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, pairs);
+            startActivity(intent, options.toBundle());
+        }, SPLASH_SCREEN);
+
+        //database = FirebaseDatabase.getInstance();
+        //rootRef = database.getReference();
     }
 }

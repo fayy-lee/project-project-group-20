@@ -26,8 +26,4 @@ public class Doctor extends User{
             //automatically set to active, WILL CHANGE LATER
         
     }
-
-                    
-                        
-    
 }
