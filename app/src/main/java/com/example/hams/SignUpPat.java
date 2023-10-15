@@ -1,5 +1,6 @@
 package com.example.hams;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,15 +9,13 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SignUpDoctor extends AppCompatActivity {
-
+public class SignUpPat extends AppCompatActivity{
     private Button button;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_sign_up_doc);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_sign_up_pat);
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -26,8 +25,7 @@ public class SignUpDoctor extends AppCompatActivity {
             }
         });
     }
-
-    public void openLogin() {
+    public void openLogin(){
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }

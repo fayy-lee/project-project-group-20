@@ -25,13 +25,13 @@ public class roles extends AppCompatActivity {
         patientCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(roles.this, SignUpPatient.class));
+                startActivity(new Intent(roles.this, SignUpPat.class));
             }
         });
         doctorCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(roles.this, SignUpDoctor.class));
+                startActivity(new Intent(roles.this, SignUpDoc.class));
             }
         });
         adminCard.setOnClickListener(new View.OnClickListener() {
