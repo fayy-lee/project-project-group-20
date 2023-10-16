@@ -16,6 +16,27 @@
         android:theme="@style/Theme.HAMS"
         tools:targetApi="31">
         <activity
+            android:name=".LoginAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".AdminView"
+            android:exported="false" />
+        <activity
+            android:name=".PatView"
+            android:exported="false" />
+        <activity
+            android:name=".DocView"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPat"
+            android:exported="false" />
+        <activity
+            android:name=".LoginDoc"
+            android:exported="false" />
+        <activity
+            android:name=".RolesLog"
+            android:exported="false" />
+        <activity
             android:name=".SignUpPat"
             android:exported="false" />
         <activity
