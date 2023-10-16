@@ -25,19 +25,19 @@ public class RolesLog extends AppCompatActivity {
         patientCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RolesLog.this, PatView.class));
+                startActivity(new Intent(RolesLog.this, LoginPat.class));
             }
         });
         doctorCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RolesLog.this, DocView.class));
+                startActivity(new Intent(RolesLog.this, LoginDoc.class));
             }
         });
         adminCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RolesLog.this, AdminView.class));
+                startActivity(new Intent(RolesLog.this, LoginAdmin.class));
             }
         });
     }

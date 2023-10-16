@@ -37,7 +37,7 @@ public class roles extends AppCompatActivity {
         adminCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(roles.this, Login.class));
+                startActivity(new Intent(roles.this, LoginAdmin.class));
             }
         });
     }

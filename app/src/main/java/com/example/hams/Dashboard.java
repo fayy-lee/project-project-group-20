@@ -16,7 +16,7 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_dashboard);
-        //defining the cards (from dahsboards.xml)
+        //defining the cards (from dashboards.xml)
         loginCard = findViewById(R.id.login);
         signupCard = findViewById(R.id.signup);
         logoutCard = findViewById(R.id.logout);
@@ -24,7 +24,7 @@ public class Dashboard extends AppCompatActivity {
         loginCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Dashboard.this, Login.class));
+                startActivity(new Intent(Dashboard.this, RolesLog.class));
             }
         });
         signupCard.setOnClickListener(new View.OnClickListener() {

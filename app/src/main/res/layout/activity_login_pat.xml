@@ -15,15 +15,16 @@
         android:layout_height="150dp"
         android:transitionName="logo_image"
         android:src="@drawable/log"/>
+
     <TextView
         android:id="@+id/logo_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello there, Welcome Back"
-        android:textSize="40sp"
-        android:transitionName="logo_text"
         android:fontFamily="@font/alta"
-        android:textColor="#000"/>
+        android:text="Hello there, Welcome Back (pat log)"
+        android:textColor="#000"
+        android:textSize="40sp"
+        android:transitionName="logo_text" />
     <TextView
         android:id="@+id/slogan_name"
         android:layout_width="wrap_content"
