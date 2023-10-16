@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,8 +21,8 @@ public class LoginAdmin extends AppCompatActivity {
         setContentView(R.layout.activity_login_admin);
 
         button = (Button) findViewById(R.id.button);
-        TextInputEditText emailBox = findViewById(R.id.username);
-        TextInputEditText passwordBox = findViewById(R.id.password);
+        TextInputEditText emailBox = findViewById(R.id.email);
+        TextInputEditText passwordBox = findViewById(R.id.pass);
 
         //Toast invalidLoginToast = new Toast(this); //make toast pop up AFTER D1 IS OVER WITH
         button.setOnClickListener(new View.OnClickListener() {

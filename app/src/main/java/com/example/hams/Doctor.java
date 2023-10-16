@@ -6,12 +6,12 @@ public class Doctor extends User{
     String phoneNumber;
     String address;
     String employeeNumber;
-    String[] specialties;
+    String specialties;
 
 
     public Doctor(String user, String pass, String first, String last,
                 String phone, String address,
-                String number, String[] specialties) {
+                String number, String specialties) {
         super(user, pass);
         // fully initialize the doctor's attributes
             this.firstName = first;
