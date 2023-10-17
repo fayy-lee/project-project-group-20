@@ -14,12 +14,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
+    public static FirebaseDatabase database;
+    public static DatabaseReference rootRef, newRef;
 
     private static int SPLASH_SCREEN = 5000;
-    //initialize the database connection and the references (2 so that we don't just override one node
-    //FirebaseDatabase database;
-    //DatabaseReference rootRef, newRef;
+
     // animations
     // variables
     Animation topAnim, bottomAnim;
@@ -52,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, pairs);
             startActivity(intent, options.toBundle());
         }, SPLASH_SCREEN);
-
-        //database = FirebaseDatabase.getInstance();
-        //rootRef = database.getReference();
+        //initialize the reference objects for firebase
+        //        database = FirebaseDatabase.getInstance();
+        //        rootRef = database.getReference();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.hams;
 
+import static com.example.hams.MainActivity.admin;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,7 @@ public class AdminView extends AppCompatActivity {
         logoutCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                admin.logout();
                 startActivity(new Intent(AdminView.this, MainActivity.class));
             }
         });
