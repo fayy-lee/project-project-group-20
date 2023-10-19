@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUpDoc extends AppCompatActivity {
 
     private Button button;
-    TextInputEditText user;
+    TextInputEditText email;
     TextInputEditText pass;
     TextInputEditText first;
     TextInputEditText last;
@@ -51,7 +51,7 @@ public class SignUpDoc extends AppCompatActivity {
 
         //initialize editText elements
         button = (Button) findViewById(R.id.button);
-        user = findViewById(R.id.email);
+        email = findViewById(R.id.email);
         pass = findViewById(R.id.pass);
         first = findViewById(R.id.firstname);
         last = findViewById(R.id.lastname);
@@ -63,7 +63,7 @@ public class SignUpDoc extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //read input values
-                String username = String.valueOf(user.getText());
+                String emailAddress = String.valueOf(email.getText());
                 String password = String.valueOf(pass.getText());
                 String firstname = String.valueOf(first.getText());
                 String lastname = String.valueOf(last.getText());
@@ -74,19 +74,27 @@ public class SignUpDoc extends AppCompatActivity {
                 //submit registration info
 
 
-
-                mAuth.createUserWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
 
+
+                            Doctor doctor = new Doctor();
+                            doctor.setFirstName(firstname);
+                            doctor.setLastName(lastname);
+                            doctor.setAddress(address);
+                            doctor.setPhoneNumber(phoneNo);
+                            doctor.setEmployeeNumber(employeeNo);
+                            doctor.setSpecialties(specialties);
+                            doctor.setUserName(emailAddress);
+                            doctor.setPassWord(password);
+
                             fUser = mAuth.getCurrentUser();
                             String IDstring = fUser.getUid();
 
-                            Doctor doctor = new Doctor(username, password, firstname, lastname,phoneNo, address, employeeNo,specialties);
-
-                            rootRef.child("users").child(IDstring).setValue(doctor);
+                            rootRef.child("Users").child("Doctors").child(IDstring).setValue(doctor);
 
                             Toast.makeText(SignUpDoc.this, "Authentication successful", Toast.LENGTH_SHORT).show();
                         } else {

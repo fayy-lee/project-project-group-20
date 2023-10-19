@@ -8,10 +8,29 @@ public class User{
     private boolean loggedIn; //variable to check if user is already logged in (might be useless lol idk)
     private boolean active;
 
+    public User(){
+        active = true;
+    }
     public User(String user, String pass){
         userName = user;
         passWord = pass;
         active = true; //THIS SHOULD CHANGE TO FALSE ONCE ADMIN CAN APPROVE PPL
+    }
+
+    public String getUserName(){
+        return userName;
+    }
+
+    public String getPassWord(){
+        return passWord;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 
     public boolean login(String user, String pass){
