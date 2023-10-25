@@ -90,11 +90,12 @@ public class SignUpDoc extends AppCompatActivity {
                             doctor.setSpecialties(specialties);
                             doctor.setUserName(emailAddress);
                             doctor.setPassWord(password);
+                            doctor.setStatus("Pending");
 
                             fUser = mAuth.getCurrentUser();
                             String IDstring = fUser.getUid();
 
-                            rootRef.child("Users").child("Doctors").child(IDstring).setValue(doctor);
+                            rootRef.child("Requests").child("Pending").child(IDstring).setValue(doctor);
 
                             Toast.makeText(SignUpDoc.this, "Authentication successful", Toast.LENGTH_SHORT).show();
                         } else {

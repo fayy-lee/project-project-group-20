@@ -83,12 +83,14 @@ public class SignUpPat extends AppCompatActivity{
                             patient.setEmailAddress(emailAddress); //email
                             patient.setPassWord(password);
                             patient.setHealthCard(healthCard);
+                            patient.setStatus("Pending");
 
                             fUser = mAuth.getCurrentUser();
                             String IDstring = fUser.getUid();
 
 
-                            rootRef.child("Users").child("Patients").child(IDstring).setValue(patient);
+                            //put the user in the database as pending
+                            rootRef.child("Requests").child("Pending").child(IDstring).setValue(patient);
 
                             Toast.makeText(SignUpPat.this, "Authentication successful", Toast.LENGTH_SHORT).show();
                         } else {
