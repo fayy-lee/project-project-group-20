@@ -7,6 +7,7 @@ public class Admin extends User{
 
     public Admin() {
         super(userName, passWord);
+        status = "Approved";
     }
 
     public String getUser(){
