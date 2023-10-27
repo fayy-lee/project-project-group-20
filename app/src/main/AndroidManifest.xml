@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HAMS"
         tools:targetApi="31">
+        <activity
+            android:name=".AdminRejected"
+            android:exported="false" />
+        <activity
+            android:name=".AdminPending"
+            android:exported="false" />
+        <activity
+            android:name=".AdminApproved"
+            android:exported="false" />
+        <activity
+            android:name=".AdminNavMenu"
+            android:exported="false" />
         <activity
             android:name=".LoginAdmin"
             android:exported="false" />
