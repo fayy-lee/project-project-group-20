@@ -18,7 +18,7 @@ public class Admin extends User{
     }
 
     public void approve(User user){
-        user.setActive(true);
+        user.setStatus("Approved");
     }
 
     

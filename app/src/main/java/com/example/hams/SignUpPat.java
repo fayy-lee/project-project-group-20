@@ -36,7 +36,6 @@ public class SignUpPat extends AppCompatActivity{
     private FirebaseDatabase database;
     private DatabaseReference rootRef, newRef;
 
-    public Patient patient;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -49,7 +48,7 @@ public class SignUpPat extends AppCompatActivity{
         rootRef = database.getReference();
 
         button = (Button) findViewById(R.id.button);
-        user = findViewById(R.id.user);
+        //user = findViewById(R.id.user);
         pass = findViewById(R.id.pass);
         first = findViewById(R.id.firstname);
         last = findViewById(R.id.lastname);
@@ -61,7 +60,7 @@ public class SignUpPat extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 //read input values
-                String username = String.valueOf(user.getText());
+                //String username = String.valueOf(user.getText());
                 String password = String.valueOf(pass.getText());
                 String firstname = String.valueOf(first.getText());
                 String lastname = String.valueOf(last.getText());
@@ -70,20 +69,28 @@ public class SignUpPat extends AppCompatActivity{
                 String emailAddress = String.valueOf(email.getText());
                 String healthCard = String.valueOf(HCN.getText());
 
-                //submit registration info and create patient object
-                patient = new Patient(firstname,lastname,emailAddress,password,username,phoneNo,address,healthCard);
 
                 mAuth.createUserWithEmailAndPassword(emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+
+                            Patient patient = new Patient();
+                            patient.setFirstName(firstname);
+                            patient.setLastName(lastname);
+                            patient.setAddress(address);
+                            patient.setPhoneNumber(phoneNo);
+                            patient.setEmailAddress(emailAddress); //email
+                            patient.setPassWord(password);
+                            patient.setHealthCard(healthCard);
+                            patient.setStatus("Pending");
 
                             fUser = mAuth.getCurrentUser();
                             String IDstring = fUser.getUid();
 
 
-                            rootRef.child("users").child(IDstring).setValue(patient);
+                            //put the user in the database as pending
+                            rootRef.child("Requests").child("Pending").child(IDstring).setValue(patient);
 
                             Toast.makeText(SignUpPat.this, "Authentication successful", Toast.LENGTH_SHORT).show();
                         } else {

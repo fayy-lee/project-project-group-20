@@ -17,8 +17,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginDoc extends AppCompatActivity {
 
@@ -38,7 +41,7 @@ public class LoginDoc extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        rootRef = database.getReference();
+        rootRef = database.getReference().child("Requests").child("Pending"); //checks pending CHANGE TO APPRIVED
 
 
         button = (Button) findViewById(R.id.button);
@@ -54,16 +57,18 @@ public class LoginDoc extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
+                                    // Sign in success so user exists, but now we check if theyre approved or not
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(LoginDoc.this, "Authentication successful.",
-                                            Toast.LENGTH_SHORT).show();
-                                    openLogin();
+                                    if(user == null){
+
+                                        Log.d("Info","user null");
+                                    }
+                                    checkStatus(user);
 
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w("Info", "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginDoc.this, "Authentication failed.",
+                                    Toast.makeText(LoginDoc.this, "Login failed.",
                                             Toast.LENGTH_SHORT).show();
 
                                 }
@@ -77,6 +82,53 @@ public class LoginDoc extends AppCompatActivity {
     public void openLogin(){
         Intent intent = new Intent(this, DocView.class);
         startActivity(intent);
+    }
+    public void openSplash(){
+        Intent intent = new Intent(this, Dashboard.class);
+        startActivity(intent);
+    }
+
+    /*
+    Method to check the status of the user based on the firebase attribute "status"
+    If approved, login is successful, if not, a toast is shown and the user is sent to the splash page
+     */
+    private void checkStatus(FirebaseUser user){
+        //reference the database elements connected to the user
+        DatabaseReference userRef = rootRef.child(user.getUid());
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+                    //now check what we wanna do
+                    String userStatus = snapshot.child("status").getValue(String.class);
+                    Log.d("Info", userStatus); //show status in logs, just for debugging
+                    if(userStatus.equals("Approved")){
+                        //proceed to login as normal
+                        Toast.makeText(LoginDoc.this, "Login successful.",
+                                Toast.LENGTH_SHORT).show();
+                        openLogin();
+                    } else if(userStatus.equals("Pending")){
+                        //give pending message, send back to splash
+                        Toast.makeText(LoginDoc.this, "Account approval pending.",
+                                Toast.LENGTH_SHORT).show();
+                        openSplash();
+                    } else if(userStatus.equals("Rejected")){
+                        //give rejected mesage, send to splash
+                        Toast.makeText(LoginDoc.this, "Account approval rejected.",
+                                Toast.LENGTH_SHORT).show();
+                        openSplash();
+                    }
+                }else{
+                    //there is no data found for that user?
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }

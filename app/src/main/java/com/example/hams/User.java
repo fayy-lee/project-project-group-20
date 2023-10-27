@@ -6,17 +6,37 @@ public class User{
     private String userName; //username and password are the same
     private String passWord;
     private boolean loggedIn; //variable to check if user is already logged in (might be useless lol idk)
-    private boolean active;
+    String status;
 
+
+    public User(){
+        status = "Pending";
+    }
     public User(String user, String pass){
         userName = user;
         passWord = pass;
-        active = true; //THIS SHOULD CHANGE TO FALSE ONCE ADMIN CAN APPROVE PPL
+        status = "Pending"; //automatically pending
+    }
+
+    public String getUserName(){
+        return userName;
+    }
+
+    public String getPassWord(){
+        return passWord;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 
     public boolean login(String user, String pass){
         //check if the account is activated
-        if(!active){
+        if(status.equals("Pending")){
             System.out.println("Account pending approval. Unable to login at this time.");
             return false;
         }
@@ -35,12 +55,12 @@ public class User{
         return loggedIn;
     }
 
-    public boolean isActive(){
-        return active;
+    public String getStatus(){
+        return status;
     }
 
-    public void setActive(boolean value){
-        active = value;
+    public void setStatus(String stat){
+        status = stat;
     }
 
 
