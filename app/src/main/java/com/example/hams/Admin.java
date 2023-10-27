@@ -21,6 +21,9 @@ public class Admin extends User{
     public void approve(User user){
         user.setStatus("Approved");
     }
-
+    
+    public void reject(User user){
+        user.setStatus("Rejected");
+    }
     
 }

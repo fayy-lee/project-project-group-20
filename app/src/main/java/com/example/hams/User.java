@@ -40,6 +40,11 @@ public class User{
             System.out.println("Account pending approval. Unable to login at this time.");
             return false;
         }
+        // checking if account was rejected
+        if(status.equals("Rejected")){
+            System.out.println("Account rejected. Unable to login.");
+            return false;
+        }
         if(user.equals(userName) && pass.equals(passWord)){
             System.out.println("Welcome "+userName);
             loggedIn = true;
