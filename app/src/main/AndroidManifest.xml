@@ -17,6 +17,18 @@
         android:theme="@style/Theme.HAMS"
         tools:targetApi="31">
         <activity
+            android:name=".AdminRejectedFragment"
+            android:exported="false" />
+        <activity
+            android:name=".AdminApprovedFragment"
+            android:exported="false" />
+        <activity
+            android:name=".AdminPendingFragment"
+            android:exported="false" />
+        <activity
+            android:name=".BottomNavMenu"
+            android:exported="false" />
+        <activity
             android:name=".AdminRejected"
             android:exported="false" />
         <activity
