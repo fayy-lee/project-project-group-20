@@ -1,0 +1,67 @@
+[debug] [2023-10-27T22:03:52.769Z] ----------------------------------------------------------------------
+[debug] [2023-10-27T22:03:52.772Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\schoo\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init functions
+[debug] [2023-10-27T22:03:52.773Z] CLI Version:   12.7.0
+[debug] [2023-10-27T22:03:52.773Z] Platform:      win32
+[debug] [2023-10-27T22:03:52.773Z] Node Version:  v20.9.0
+[debug] [2023-10-27T22:03:52.773Z] Time:          Fri Oct 27 2023 18:03:52 GMT-0400 (Eastern Daylight Saving Time)
+[debug] [2023-10-27T22:03:52.773Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-10-27T22:03:52.780Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-10-27T22:03:52.780Z] > authorizing via signed-in user (richa.kewal123@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\schoo\Documents\GitHub\SEG lab\project-project-group-20
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2023-10-27T22:04:21.237Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2023-10-27T22:04:21.794Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2023-10-27T22:04:21.795Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project hams-group-20 (HAMS Group 20) 
+[info] 
+=== Functions Setup
+[debug] [2023-10-27T22:04:25.236Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-10-27T22:04:25.237Z] > authorizing via signed-in user (richa.kewal123@gmail.com)
+[debug] [2023-10-27T22:04:25.237Z] [iam] checking project hams-group-20 for permissions ["firebase.projects.get"]
+[debug] [2023-10-27T22:04:25.238Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/hams-group-20:testIamPermissions [none]
+[debug] [2023-10-27T22:04:25.238Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/hams-group-20:testIamPermissions x-goog-quota-user=projects/hams-group-20
+[debug] [2023-10-27T22:04:25.238Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hams-group-20:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-10-27T22:04:25.642Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/hams-group-20:testIamPermissions 200
+[debug] [2023-10-27T22:04:25.643Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hams-group-20:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-10-27T22:04:25.644Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com [none]
+[debug] [2023-10-27T22:04:25.644Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/hams-group-20
+[debug] [2023-10-27T22:04:25.646Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/runtimeconfig.googleapis.com [none]
+[debug] [2023-10-27T22:04:25.646Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/hams-group-20
+[debug] [2023-10-27T22:04:26.271Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/runtimeconfig.googleapis.com 200
+[debug] [2023-10-27T22:04:26.272Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2023-10-27T22:04:26.274Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com 200
+[debug] [2023-10-27T22:04:26.274Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2023-10-27T22:04:26.275Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com:enable [none]
+[debug] [2023-10-27T22:04:26.275Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com:enable x-goog-quota-user=projects/hams-group-20
+[debug] [2023-10-27T22:04:27.685Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com:enable 200
+[debug] [2023-10-27T22:04:27.685Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com:enable [omitted]
+[debug] [2023-10-27T22:04:37.697Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com [none]
+[debug] [2023-10-27T22:04:37.697Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/hams-group-20
+[debug] [2023-10-27T22:04:38.344Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com 200
+[debug] [2023-10-27T22:04:38.345Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/hams-group-20/services/cloudfunctions.googleapis.com [omitted]
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+

@@ -48,6 +48,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
 
+    implementation("javax.servlet:javax.servlet-api:4.0.1")
+    implementation("com.google.firebase:firebase-admin:9.0.0")
+    implementation("com.sun.mail:javax.mail:1.6.2")
+
+
 
 
 

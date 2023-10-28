@@ -14,4 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "HAMS"
-include(":app")
+include(":app",":Server")
