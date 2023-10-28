@@ -15,7 +15,6 @@ public class Patient extends User{
     private String phoneNo;
     private String address;
     private String healthCard;
-    private String emailAddress;
 
     /*public Patient(String firstName, String lastName, String email, String pass, String user, String phoneNo, String address, String healthCard){
         
@@ -57,10 +56,6 @@ public class Patient extends User{
         return phoneNo;
     }
 
-    public String getEmailAddress(){
-        return emailAddress;
-    }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -80,8 +75,5 @@ public class Patient extends User{
 
     public void setHealthCard(String healthCard){
         this.healthCard = healthCard;
-    }
-    public void setEmailAddress(String emailAddress){
-        this.emailAddress = emailAddress;
     }
 }
