@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Patient extends User{
 
-    String firstName;
-    String lastName;
-    String phoneNo;
-    String address;
-    String healthCard;
-    String emailAddress;
+    private String firstName;
+    private String lastName;
+    private String phoneNo;
+    private String address;
+    private String healthCard;
+    private String emailAddress;
 
     /*public Patient(String firstName, String lastName, String email, String pass, String user, String phoneNo, String address, String healthCard){
         
@@ -44,9 +44,6 @@ public class Patient extends User{
     }
     public String getHealthCard(){
         return healthCard;
-    }
-    public String getPhoneNumber() {
-        return phoneNo;
     }
 
     public String getFirstName() {
@@ -83,9 +80,6 @@ public class Patient extends User{
 
     public void setHealthCard(String healthCard){
         this.healthCard = healthCard;
-    }
-    public void setPhoneNo(String phoneNo){
-        this.phoneNo = phoneNo;
     }
     public void setEmailAddress(String emailAddress){
         this.emailAddress = emailAddress;

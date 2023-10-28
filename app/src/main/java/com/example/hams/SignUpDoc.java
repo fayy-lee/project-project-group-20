@@ -91,6 +91,7 @@ public class SignUpDoc extends AppCompatActivity {
                             doctor.setUserName(emailAddress);
                             doctor.setPassWord(password);
                             doctor.setStatus("Pending");
+                            doctor.setType("Doctor");
 
                             fUser = mAuth.getCurrentUser();
                             String IDstring = fUser.getUid();

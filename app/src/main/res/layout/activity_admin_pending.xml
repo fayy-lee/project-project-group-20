@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".AdminPending">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="PENDING"
+        android:layout_below="@+id/recyclerviewPending"
+        />
+
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
@@ -17,35 +24,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation" />
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"/>
 
-
-    <ImageButton
-        android:id="@+id/reject"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/name"
-        android:layout_marginLeft="275dp"
-        android:src="@drawable/baseline_remove_circle_24" />
-
-    <ImageButton
-        android:id="@+id/accept"
-        android:layout_width="wrap_content"
+        android:id="@+id/recyclerviewPending"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/reject"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginRight="-51dp"
-        android:src="@drawable/baseline_check_circle_24" />
+        android:id="@+id/recyclerviewApproved"
+        />
 
 </RelativeLayout>
