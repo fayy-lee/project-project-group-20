@@ -25,5 +25,4 @@ public class Admin extends User{
     public void reject(User user){
         user.setStatus("Rejected");
     }
-    
 }

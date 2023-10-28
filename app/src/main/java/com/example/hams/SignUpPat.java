@@ -3,6 +3,7 @@ package com.example.hams;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpPat extends AppCompatActivity{
     private Button button;
-    TextInputEditText user;
     TextInputEditText pass;
     TextInputEditText first;
     TextInputEditText last;
@@ -34,7 +34,7 @@ public class SignUpPat extends AppCompatActivity{
     private FirebaseAuth mAuth;
     FirebaseUser fUser;
     private FirebaseDatabase database;
-    private DatabaseReference rootRef, newRef;
+    private DatabaseReference rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -76,6 +76,7 @@ public class SignUpPat extends AppCompatActivity{
                         if (task.isSuccessful()) {
 
                             Patient patient = new Patient();
+                            //attributes need to have a getter method to be added to the database
                             patient.setFirstName(firstname);
                             patient.setLastName(lastname);
                             patient.setAddress(address);
@@ -84,6 +85,8 @@ public class SignUpPat extends AppCompatActivity{
                             patient.setPassWord(password);
                             patient.setHealthCard(healthCard);
                             patient.setStatus("Pending");
+                            patient.setType("Patient");
+
 
                             fUser = mAuth.getCurrentUser();
                             String IDstring = fUser.getUid();

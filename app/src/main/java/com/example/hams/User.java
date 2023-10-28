@@ -1,12 +1,15 @@
 package com.example.hams;
 // parent class to log in/out all types of users
 
+import android.util.Log;
+
 public class User{
 
     private String userName; //username and password are the same
     private String passWord;
     private boolean loggedIn; //variable to check if user is already logged in (might be useless lol idk)
-    String status;
+    protected String status;
+    private String type;
 
 
     public User(){
@@ -15,7 +18,6 @@ public class User{
     public User(String user, String pass){
         userName = user;
         passWord = pass;
-        status = "Pending"; //automatically pending
     }
 
     public String getUserName(){
@@ -68,7 +70,13 @@ public class User{
         status = stat;
     }
 
+    public void setType(String newType){
+        type = newType;
+    }
 
+    public String getType(){
+        return type;
+    }
 
     public void logout(){
         //will at some point send user back to the login/sign up page

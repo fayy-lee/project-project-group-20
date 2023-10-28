@@ -3,4 +3,6 @@
     <item type="id" name="navigation_main" />
     <item type="id" name="nav_approved" />
     <item type="id" name="nav_rejects" />
+    <item name="reject" type="id" />
+    <item name="accept" type="id" />
 </resources>

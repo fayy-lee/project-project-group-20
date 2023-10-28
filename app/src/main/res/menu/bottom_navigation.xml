@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/nav_approved"
+        android:id="@+id/menu_approved"
         android:title="Approved"
-        android:icon="@drawable/baseline_check_24"/>
+        app:itemIconTint="@drawable/bottom_navigation_item_selector"/>
     <item
-        android:id="@+id/nav_pending"
+        android:id="@+id/menu_pending"
         android:title="Pending"
-        android:icon="@drawable/baseline_refresh_24"/>
+        app:itemIconTint="@drawable/bottom_navigation_item_selector"/>
     <item
-        android:id="@+id/nav_rejects"
+        android:id="@+id/menu_rejected"
         android:title="Rejected"
-        android:icon="@drawable/baseline_remove_24"/>
+        app:itemIconTint="@drawable/bottom_navigation_item_selector"/>
 </menu>

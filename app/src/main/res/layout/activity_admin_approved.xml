@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AdminApproved">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="APPROVED"
+        android:layout_below="@+id/recyclerview"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerview"
+        />
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
@@ -18,10 +30,5 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation" />
 
-    <TextView
-        android:id="@+id/textReceived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Received Text Will Be Shown Here" />
+
 </RelativeLayout>
