@@ -1,3 +1,5 @@
+package com.example.hams;
+
 import java.util.Properties;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -6,7 +8,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class sendEmail {
+/*public class sendEmail {
 
     public static void sendingEmail(String to, String subject, String messageBody) throws MessagingException {
         Properties properties = new Properties();
@@ -31,4 +33,4 @@ public class sendEmail {
         Transport.send(message);
     }
 
-}
+}*/

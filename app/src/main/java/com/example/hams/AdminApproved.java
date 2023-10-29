@@ -33,7 +33,7 @@ public class AdminApproved extends AppCompatActivity {
     private TextView textView;
     private ImageButton reject, accept;
     private BottomNavigationView bottomNavigationView;
-    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Requests").child("Pending");
+    DatabaseReference usersRef = MainActivity.usersRef;
     Query approvedUsersQuery = usersRef.orderByChild("status").equalTo("Approved");
 
     public void setApprovedView(){

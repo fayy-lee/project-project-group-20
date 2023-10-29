@@ -30,8 +30,8 @@ public class LoginPat extends AppCompatActivity {
     private Button button;
     private FirebaseAuth mAuth;
     FirebaseUser fUser;
-    private FirebaseDatabase database;
-    private DatabaseReference rootRef, newRef;
+    private FirebaseDatabase database = MainActivity.database;
+    DatabaseReference usersRef = MainActivity.usersRef;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -40,8 +40,6 @@ public class LoginPat extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        rootRef = database.getReference().child("Requests").child("Pending");
 
         button = (Button) findViewById(R.id.button);
         TextInputEditText userBox = findViewById(R.id.user);
@@ -67,7 +65,6 @@ public class LoginPat extends AppCompatActivity {
                                 checkStatus(user);
                             }
 
-                            checkStatus(user);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -95,7 +92,7 @@ public class LoginPat extends AppCompatActivity {
      */
     private void checkStatus(FirebaseUser user){
         //reference the database elements connected to the user
-        DatabaseReference userRef = rootRef.child(user.getUid());
+        DatabaseReference userRef = usersRef.child(user.getUid());
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -36,8 +36,8 @@ public class SignUpDoc extends AppCompatActivity {
     TextInputEditText special;
     private FirebaseAuth mAuth;
     FirebaseUser fUser;
-    private FirebaseDatabase database;
-    private DatabaseReference rootRef, newRef;
+    FirebaseDatabase database = MainActivity.database;
+    DatabaseReference usersRef = MainActivity.usersRef;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -46,8 +46,6 @@ public class SignUpDoc extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        rootRef = database.getReference();
 
         //initialize editText elements
         button = (Button) findViewById(R.id.button);
@@ -96,7 +94,7 @@ public class SignUpDoc extends AppCompatActivity {
                             fUser = mAuth.getCurrentUser();
                             String IDstring = fUser.getUid();
 
-                            rootRef.child("Requests").child("Pending").child(IDstring).setValue(doctor);
+                            usersRef.child(IDstring).setValue(doctor);
 
                             Toast.makeText(SignUpDoc.this, "Authentication successful", Toast.LENGTH_SHORT).show();
                         } else {

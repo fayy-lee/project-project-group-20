@@ -32,8 +32,7 @@ public class AdminPending extends AppCompatActivity {
     private ImageButton reject, accept;
     private SharedPreferences sharedPreferences;
     private BottomNavigationView bottomNavigationView;
-    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Requests").child("Pending");
-
+    DatabaseReference usersRef = MainActivity.usersRef;
     Query pendingUsersQuery = usersRef.orderByChild("status").equalTo("Pending");
 
     public void setApprovedView(){

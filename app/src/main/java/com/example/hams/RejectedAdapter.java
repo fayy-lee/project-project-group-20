@@ -32,7 +32,7 @@ public class RejectedAdapter extends RecyclerView.Adapter<MyViewHolder>{
         //set the text to match the item from the list passed in
         holder.first.setText(patientList.get(position).getFirstName());
         holder.last.setText(patientList.get(position).getLastName());
-        holder.email.setText(patientList.get(position).getEmailAddress());
+        holder.email.setText(patientList.get(position).getUserName());
         holder.address.setText(patientList.get(position).getAddress());
         holder.phoneNumber.setText(patientList.get(position).getPhoneNo());
         holder.healthCard.setText(patientList.get(position).getHealthCard());

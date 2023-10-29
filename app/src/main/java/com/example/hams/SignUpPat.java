@@ -33,8 +33,8 @@ public class SignUpPat extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
     FirebaseUser fUser;
-    private FirebaseDatabase database;
-    private DatabaseReference rootRef;
+    FirebaseDatabase database = MainActivity.database;
+    DatabaseReference usersRef = MainActivity.usersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -44,8 +44,6 @@ public class SignUpPat extends AppCompatActivity{
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        rootRef = database.getReference();
 
         button = (Button) findViewById(R.id.button);
         //user = findViewById(R.id.user);
@@ -81,7 +79,7 @@ public class SignUpPat extends AppCompatActivity{
                             patient.setLastName(lastname);
                             patient.setAddress(address);
                             patient.setPhoneNumber(phoneNo);
-                            patient.setEmailAddress(emailAddress); //email
+                            patient.setUserName(emailAddress); //email
                             patient.setPassWord(password);
                             patient.setHealthCard(healthCard);
                             patient.setStatus("Pending");
@@ -93,7 +91,7 @@ public class SignUpPat extends AppCompatActivity{
 
 
                             //put the user in the database as pending
-                            rootRef.child("Requests").child("Pending").child(IDstring).setValue(patient);
+                            usersRef.child(IDstring).setValue(patient);
 
                             Toast.makeText(SignUpPat.this, "Authentication successful", Toast.LENGTH_SHORT).show();
                         } else {

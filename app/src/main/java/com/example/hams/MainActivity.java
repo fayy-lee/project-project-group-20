@@ -18,8 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    public static FirebaseDatabase database;
-    public static DatabaseReference rootRef, newRef;
+    public static FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public static DatabaseReference dbReference = database.getReference();
+    public static DatabaseReference usersRef = dbReference.child("Users");
 
     private static int SPLASH_SCREEN = 5000;
 
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
 
@@ -55,8 +58,5 @@ public class MainActivity extends AppCompatActivity {
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, pairs);
             startActivity(intent, options.toBundle());
         }, SPLASH_SCREEN);
-        //initialize the reference objects for firebase
-        //        database = FirebaseDatabase.getInstance();
-        //        rootRef = database.getReference();
     }
 }
