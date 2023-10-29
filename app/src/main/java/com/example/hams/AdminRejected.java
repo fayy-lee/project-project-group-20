@@ -25,8 +25,7 @@ import java.util.List;
 
 public class AdminRejected extends AppCompatActivity {
 
-    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Requests").child("Pending");
-
+    DatabaseReference usersRef = MainActivity.usersRef;
     Query rejectedUsersQuery = usersRef.orderByChild("status").equalTo("Rejected");
     public void setApprovedView(){
         Intent intent = new Intent(this, AdminApproved.class);

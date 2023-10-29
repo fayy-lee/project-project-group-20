@@ -21,7 +21,6 @@ public class Login extends AppCompatActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 openLogin();
             }
         });
