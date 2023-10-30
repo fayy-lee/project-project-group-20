@@ -25,7 +25,7 @@ import java.util.List;
 
 public class AdminRejected extends AppCompatActivity {
 
-    List<Patient> rejectedPatients = AdminPending.rejectedPatients;
+    List<User> rejectedUsers = AdminPending.rejectedUsers;
     DatabaseReference usersRef = MainActivity.usersRef;
     Query rejectedUsersQuery = usersRef.orderByChild("status").equalTo("Rejected");
     public void setApprovedView(){
@@ -56,7 +56,7 @@ public class AdminRejected extends AppCompatActivity {
         rejectedUsersQuery.addValueEventListener(new ValueEventListener() {
 
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                rejectedPatients.clear(); // Clear the list to avoid duplicates
+                rejectedUsers.clear(); // Clear the list to avoid duplicates
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     Log.d("Info", "checking elements in Rejected");
                     String userType = userSnapshot.child("type").getValue(String.class);
@@ -68,8 +68,18 @@ public class AdminRejected extends AppCompatActivity {
                         Patient patient = userSnapshot.getValue(Patient.class);
                         if (patient != null) {
                             //add to the list
-                            rejectedPatients.add(patient);
+                            rejectedUsers.add(patient);
                             Log.d("Info","p: "+patient.getFirstName());
+                        }
+
+                    } else if (userType.equals("Doctor")) {
+                        Log.d("Info", "doctor detected in firebase");
+                        //only add patients to this list, because only patients will fit with this type of view
+                        Doctor doctor = userSnapshot.getValue(Doctor.class);
+                        if (doctor != null) {
+                            //add to the list
+                            rejectedUsers.add(doctor);
+                            Log.d("Info", "just added d: " + doctor.getFirstName());
                         }
                     }
                 }

@@ -3,6 +3,7 @@ package com.example.hams;
 import static com.example.hams.sendEmail.sendingEmail;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,46 +21,72 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
-public class RejectedAdapter extends RecyclerView.Adapter<MyViewHolder>{
+public class RejectedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     //ADAPTER FOR APPROVED USERS
     DatabaseReference usersRef = MainActivity.usersRef;
     Context context;
     //list of patients to display
-    List<Patient> rejectedPatientList = AdminPending.rejectedPatients;
-    List<Patient> approvedPatientList = AdminPending.approvedPatients;
+    List<User> rejectedList = AdminPending.rejectedUsers;
+    List<User> approvedList = AdminPending.approvedUsers;
 
     public RejectedAdapter(Context context) {
         this.context = context;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        Log.d("Info","User type at position "+position+": "+rejectedList.get(position).getType());
+        // Determine the item type based on your data
+        if (rejectedList.get(position).getType().equals("Patient")) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView;
         //create a viewholder to store all the instances of request_patient views
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.rejected_patient,parent,false));
+        if(viewType == 0){
+            //inflate patient
+            itemView = LayoutInflater.from(context).inflate(R.layout.rejected_patient,parent,false);
+            return new MyViewHolder(itemView);
+        } else{
+            //inflate doctor
+            itemView = LayoutInflater.from(context).inflate(R.layout.rejected_doctor,parent,false);
+            return new DoctorViewHolder(itemView);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        //set the text to match the item from the list passed in
-        holder.first.setText(rejectedPatientList.get(position).getFirstName());
-        holder.last.setText(rejectedPatientList.get(position).getLastName());
-        holder.email.setText(rejectedPatientList.get(position).getUserName());
-        holder.address.setText(rejectedPatientList.get(position).getAddress());
-        holder.phoneNumber.setText(rejectedPatientList.get(position).getPhoneNo());
-        holder.healthCard.setText(rejectedPatientList.get(position).getHealthCard());
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Log.d("info","holder type: "+holder.getClass());
+        if(holder instanceof MyViewHolder){
+            Patient p = (Patient)rejectedList.get(position);
+            //patient
 
-        holder.accept.setText("Accept");
 
-        holder.accept.setOnClickListener(new View.OnClickListener() {
+            //set the text to match the item from the list passed in
+            ((MyViewHolder) holder).first.setText(p.getFirstName());
+            ((MyViewHolder) holder).last.setText(p.getLastName());
+            ((MyViewHolder) holder).email.setText(p.getUserName());
+            ((MyViewHolder) holder).address.setText(p.getAddress());
+            ((MyViewHolder) holder).phoneNumber.setText(p.getPhoneNo());
+            ((MyViewHolder) holder).healthCard.setText(p.getHealthCard());
+
+            ((MyViewHolder) holder).accept.setText("Accept");
+
+            //eventlistener for patient buttons
+            ((MyViewHolder) holder).accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getBindingAdapterPosition();
-                Patient patient = rejectedPatientList.get(position);
+                User user = rejectedList.get(position);
 
-                Query fbPatient = usersRef.orderByChild("userName").equalTo(patient.getUserName());
+                Query fbUser = usersRef.orderByChild("userName").equalTo(user.getUserName());
                 // approve
-                fbPatient.addListenerForSingleValueEvent(new ValueEventListener() {
+                fbUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
@@ -68,11 +95,11 @@ public class RejectedAdapter extends RecyclerView.Adapter<MyViewHolder>{
                             // Update the user's information
                             userRef.child("status").setValue("Approved");
                             // sending email to notify of status change
-                            try {
+                            /*try {
                                 sendingEmail(User.getUserName(), "Account Status Change", "Your account status has changed.");
                             } catch (MessagingException e) {
                                 throw new RuntimeException(e);
-                            }
+                            }*/
                         }
                     }
 
@@ -82,11 +109,62 @@ public class RejectedAdapter extends RecyclerView.Adapter<MyViewHolder>{
                 });
             }
         });
+        } else if(holder instanceof DoctorViewHolder){
+            Log.d("info","holder type (in doctor section): "+holder.getClass());
+            Doctor d = (Doctor)rejectedList.get(position);
+            //set the text to match the item from the list passed in
+            ((DoctorViewHolder) holder).first.setText(d.getFirstName());
+            ((DoctorViewHolder) holder).last.setText(d.getLastName());
+            ((DoctorViewHolder) holder).email.setText(d.getUserName());
+            ((DoctorViewHolder) holder).address.setText(d.getAddress());
+            ((DoctorViewHolder) holder).phoneNumber.setText(d.getPhoneNumber());
+            ((DoctorViewHolder) holder).employeeNumber.setText(d.getEmployeeNumber());
+            ((DoctorViewHolder) holder).specialties.setText(d.getSpecialties());
+
+            ((DoctorViewHolder) holder).accept.setText("Accept");
+            ((DoctorViewHolder) holder).accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getBindingAdapterPosition();
+                User user = rejectedList.get(position);
+
+                Query fbUser = usersRef.orderByChild("userName").equalTo(user.getUserName());
+                // approve
+                fbUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            // Retrieve the specific user node
+                            DatabaseReference userRef = userSnapshot.getRef();
+                            // Update the user's information
+                            userRef.child("status").setValue("Approved");
+                            // sending email to notify of status change
+                            /*try {
+                                sendingEmail(User.getUserName(), "Account Status Change", "Your account status has changed.");
+                            } catch (MessagingException e) {
+                                throw new RuntimeException(e);
+                            }*/
+                        }
+                    }
+
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle errors here
+                    }
+                });
+            }
+        });
+        } else{
+            Log.d("info","NEITHER PATIENT NOR DOCTOR??");
+        }
+
+
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return rejectedPatientList.size();
+        return rejectedList.size();
     }
 }

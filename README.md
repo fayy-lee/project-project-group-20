@@ -2,5 +2,5 @@
 project-project-group-20 created by GitHub Classroom
 
 Admin credentials:
-username - admin20
-password - adminPass123
+username - Admin20
+password - AdminPass123

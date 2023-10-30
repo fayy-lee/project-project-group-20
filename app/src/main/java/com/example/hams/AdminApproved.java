@@ -35,7 +35,7 @@ public class AdminApproved extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     DatabaseReference usersRef = MainActivity.usersRef;
     Query approvedUsersQuery = usersRef.orderByChild("status").equalTo("Approved");
-    List<Patient> approvedPatients = AdminPending.approvedPatients;
+    List<User> approvedUsers = AdminPending.approvedUsers;
 
     public void setApprovedView(){
         Intent intent = new Intent(this, AdminApproved.class);
@@ -66,7 +66,7 @@ public class AdminApproved extends AppCompatActivity {
         approvedUsersQuery.addValueEventListener(new ValueEventListener() {
 
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                approvedPatients.clear(); // Clear the list to avoid duplicates
+                approvedUsers.clear(); // Clear the list to avoid duplicates
                 Log.d("Info", "in Approved");
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     Log.d("Info", "checking elements in Approved");
@@ -79,13 +79,22 @@ public class AdminApproved extends AppCompatActivity {
                         Patient patient = userSnapshot.getValue(Patient.class);
                         if (patient != null) {
                             //add to the list
-                            approvedPatients.add(patient);
+                            approvedUsers.add(patient);
                             Log.d("Info","p: "+patient.getFirstName());
+                        }
+                    } else if (userType.equals("Doctor")) {
+                        Log.d("Info", "doctor detected in firebase");
+                        //only add patients to this list, because only patients will fit with this type of view
+                        Doctor doctor = userSnapshot.getValue(Doctor.class);
+                        if (doctor != null) {
+                            //add to the list
+                            approvedUsers.add(doctor);
+                            Log.d("Info", "just added d: " + doctor.getFirstName());
                         }
                     }
                 }
-                for(Patient p:approvedPatients){
-                    Log.d("Info","APPROVED p: "+p.getFirstName());
+                for(User u:approvedUsers){
+                    Log.d("Info","APPROVED u: "+u.getUserName());
                 }
 
                 recyclerViewApproved.setLayoutManager(new LinearLayoutManager(context));

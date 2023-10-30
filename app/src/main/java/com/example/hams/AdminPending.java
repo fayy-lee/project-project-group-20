@@ -35,9 +35,9 @@ public class AdminPending extends AppCompatActivity {
     DatabaseReference usersRef = MainActivity.usersRef;
     Query pendingUsersQuery = usersRef.orderByChild("status").equalTo("Pending");
 
-    public static List<Patient> pendingPatients = new ArrayList<>(); //instantiate list of patients
-    public static List<Patient> approvedPatients = new ArrayList<>();
-    public static List<Patient> rejectedPatients = new ArrayList<>();
+    public static List<User> pendingUsers = new ArrayList<>(); //instantiate list of patients
+    public static List<User> approvedUsers = new ArrayList<>();
+    public static List<User> rejectedUsers = new ArrayList<>();
     public void setApprovedView(){
         Intent intent = new Intent(this, AdminApproved.class);
         startActivity(intent);
@@ -67,7 +67,7 @@ public class AdminPending extends AppCompatActivity {
         pendingUsersQuery.addValueEventListener(new ValueEventListener() {
 
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                pendingPatients.clear(); // Clear the list to avoid duplicates
+                pendingUsers.clear(); // Clear the list to avoid duplicates
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     Log.d("Info", "checking elements in Pending");
                     String userType = userSnapshot.child("type").getValue(String.class);
@@ -79,8 +79,18 @@ public class AdminPending extends AppCompatActivity {
                         Patient patient = userSnapshot.getValue(Patient.class);
                         if (patient != null) {
                             //add to the list
-                            pendingPatients.add(patient);
+                            pendingUsers.add(patient);
                             Log.d("Info", "just added p: " + patient.getFirstName());
+                        }
+                    }
+                    else if (userType.equals("Doctor")) {
+                        Log.d("Info", "doctor detected in firebase");
+                        //only add patients to this list, because only patients will fit with this type of view
+                        Doctor doctor = userSnapshot.getValue(Doctor.class);
+                        if (doctor != null) {
+                            //add to the list
+                            pendingUsers.add(doctor);
+                            Log.d("Info", "just added d: " + doctor.getFirstName());
                         }
                     }
                 }
