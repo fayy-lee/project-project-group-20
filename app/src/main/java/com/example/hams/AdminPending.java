@@ -35,6 +35,9 @@ public class AdminPending extends AppCompatActivity {
     DatabaseReference usersRef = MainActivity.usersRef;
     Query pendingUsersQuery = usersRef.orderByChild("status").equalTo("Pending");
 
+    public static List<Patient> pendingPatients = new ArrayList<>(); //instantiate list of patients
+    public static List<Patient> approvedPatients = new ArrayList<>();
+    public static List<Patient> rejectedPatients = new ArrayList<>();
     public void setApprovedView(){
         Intent intent = new Intent(this, AdminApproved.class);
         startActivity(intent);
@@ -57,8 +60,6 @@ public class AdminPending extends AppCompatActivity {
         Log.d("Info", "ON PENDIng PAGE");
 
         RecyclerView recyclerViewPending = findViewById(R.id.recyclerviewPending);
-
-        List<Patient> pendingPatients = new ArrayList<>(); //instantiate list of patients
         Context context = this;
 
 
@@ -79,13 +80,13 @@ public class AdminPending extends AppCompatActivity {
                         if (patient != null) {
                             //add to the list
                             pendingPatients.add(patient);
-                            Log.d("Info", "p: " + patient.getFirstName());
+                            Log.d("Info", "just added p: " + patient.getFirstName());
                         }
                     }
                 }
                 //send data to the adapter to bind it to the view
                 recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
-                recyclerViewPending.setAdapter(new MyAdapter(getApplicationContext(), pendingPatients));
+                recyclerViewPending.setAdapter(new MyAdapter(getApplicationContext()));
             }
 
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -99,17 +100,18 @@ public class AdminPending extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
             Log.d("Info", "item id/page: " + item.getItemId());
+            Log.d("Info", "item ID printing?");
             switch (item.getItemId()) {
-                case 2131362341: //int value of the R.id.menu_approved
+                case 2131362086: //int value of the R.id.menu_approved
                     // Load "Approved" users
                     Log.d("Info", "SHOULD BE SETTING APPROVED");
                     setApprovedView();
                     return true;
-                case 2131362342: //pending view
+                case 2131362087: //pending view
                     Log.d("Info", "SHOULD BE SETTING PENDING");
                     setPendingView();
                     return true;
-                case 2131362343: //R.id.menu_rejected
+                case 2131362088: //R.id.menu_rejected
                     //IMPLEMENT THIS WITH REJCTED AS WELL
                     Log.d("Info", "SHOULD BE SETTING REJECTED");
                     setRejectedView();

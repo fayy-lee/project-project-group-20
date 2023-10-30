@@ -1,6 +1,7 @@
 package com.example.hams;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -13,11 +14,10 @@ public class ApprovedAdapter extends RecyclerView.Adapter<MyViewHolder>{
     //ADAPTER FOR APPROVED USERS
     Context context;
     //list of patients to display
-    List<Patient> patientList;
+    List<Patient> approvedPatientList = AdminPending.approvedPatients;
 
-    public ApprovedAdapter(Context context, List<Patient> patientList) {
+    public ApprovedAdapter(Context context) {
         this.context = context;
-        this.patientList = patientList;
     }
 
     @NonNull
@@ -30,17 +30,19 @@ public class ApprovedAdapter extends RecyclerView.Adapter<MyViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         //set the text to match the item from the list passed in
-        holder.first.setText(patientList.get(position).getFirstName());
-        holder.last.setText(patientList.get(position).getLastName());
-        holder.email.setText(patientList.get(position).getUserName());
-        holder.address.setText(patientList.get(position).getAddress());
-        holder.phoneNumber.setText(patientList.get(position).getPhoneNo());
-        holder.healthCard.setText(patientList.get(position).getHealthCard());
+        holder.first.setText(approvedPatientList.get(position).getFirstName());
+        holder.last.setText(approvedPatientList.get(position).getLastName());
+        holder.email.setText(approvedPatientList.get(position).getUserName());
+        holder.address.setText(approvedPatientList.get(position).getAddress());
+        holder.phoneNumber.setText(approvedPatientList.get(position).getPhoneNo());
+        holder.healthCard.setText(approvedPatientList.get(position).getHealthCard());
+
+        Log.d("info", "in approvedAdapter, approvedPatientList size: "+approvedPatientList.size());
 
     }
 
     @Override
     public int getItemCount() {
-        return patientList.size();
+        return approvedPatientList.size();
     }
 }

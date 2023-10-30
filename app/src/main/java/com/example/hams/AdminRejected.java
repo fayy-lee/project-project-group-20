@@ -25,6 +25,7 @@ import java.util.List;
 
 public class AdminRejected extends AppCompatActivity {
 
+    List<Patient> rejectedPatients = AdminPending.rejectedPatients;
     DatabaseReference usersRef = MainActivity.usersRef;
     Query rejectedUsersQuery = usersRef.orderByChild("status").equalTo("Rejected");
     public void setApprovedView(){
@@ -48,9 +49,7 @@ public class AdminRejected extends AppCompatActivity {
         RecyclerView recyclerViewRejected = findViewById(R.id.recyclerview);
         //RecyclerView recyclerViewApproved = findViewById(R.id.recyclerviewApproved);
 
-        List<Patient> rejectedPatients = new ArrayList<>(); //instantiate list of patients
         Context context = this;
-        //List<Patient> approvedPatients = new ArrayList<>();
 
 
         //show pending patients
@@ -76,7 +75,7 @@ public class AdminRejected extends AppCompatActivity {
                 }
                 //send data to the adapter to bind it to the view
                 recyclerViewRejected.setLayoutManager(new LinearLayoutManager(context));
-                recyclerViewRejected.setAdapter(new RejectedAdapter(getApplicationContext(), rejectedPatients));
+                recyclerViewRejected.setAdapter(new RejectedAdapter(getApplicationContext()));
             }
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle errors if any
@@ -90,50 +89,19 @@ public class AdminRejected extends AppCompatActivity {
 
             Log.d("Info", "item id/page: "+item.getItemId());
             switch (item.getItemId()) {
-                case 2131362341: //int value of the R.id.menu_approved
+                case 2131362086: //int value of the R.id.menu_approved
                     // Load "Approved" users
-                    /*approvedUsersQuery.addValueEventListener(new ValueEventListener() {
 
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            approvedPatients.clear(); // Clear the list to avoid duplicates
-                            Log.d("Info", "in Approved");
-                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                Log.d("Info", "checking elements in Approved");
-                                String userType = userSnapshot.child("type").getValue(String.class);
-
-
-                                if(userType.equals("Patient")){
-                                    Log.d("Info", "patient detected in firebase (A)");
-                                    //only add patients to this list, because only patients will fit with this type of view
-                                    Patient patient = userSnapshot.getValue(Patient.class);
-                                    if (patient != null) {
-                                        //add to the list
-                                        approvedPatients.add(patient);
-                                        Log.d("Info","p: "+patient.getFirstName());
-                                    }
-                                }
-                            }
-                            for(Patient p:approvedPatients){
-                                Log.d("Info","APPROVED p: "+p.getFirstName());
-                            }
-
-                            recyclerViewApproved.setLayoutManager(new LinearLayoutManager(context));
-                            recyclerViewApproved.setAdapter(new ApprovedAdapter(getApplicationContext(), approvedPatients));
-                        }
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Handle errors if any
-                        }
-                    }); */
                     Log.d("Info", "SHOULD BE SETTING APPROVED");
                     setApprovedView();
                     return true;
                     //finish();
-                case 2131362342: //pending view
+                case 2131362087: //pending view
                     Log.d("Info", "SHOULD BE SETTING PENDING");
                     setPendingView();
                     return true;
                     //finish();
-                case 2131362343: //R.id.menu_rejected
+                case 2131362088: //R.id.menu_rejected
                     //IMPLEMENT THIS WITH REJCTED AS WELL
                     Log.d("Info", "SHOULD BE SETTING REJECTED");
                     setRejectedView();
