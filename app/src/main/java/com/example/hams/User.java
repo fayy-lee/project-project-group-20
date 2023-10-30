@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class User{
 
-    private String userName; //username and password are the same
+    private static String userName; //username and password are the same
     private String passWord;
     private boolean loggedIn; //variable to check if user is already logged in (might be useless lol idk)
     protected String status;
@@ -20,7 +20,7 @@ public class User{
         passWord = pass;
     }
 
-    public String getUserName(){
+    public static String getUserName(){
         return userName;
     }
 

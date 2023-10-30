@@ -1,5 +1,7 @@
 package com.example.hams;
 
+import static com.example.hams.sendEmail.sendingEmail;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 public class RejectedAdapter extends RecyclerView.Adapter<MyViewHolder>{
     //ADAPTER FOR APPROVED USERS
@@ -63,6 +67,12 @@ public class RejectedAdapter extends RecyclerView.Adapter<MyViewHolder>{
                             DatabaseReference userRef = userSnapshot.getRef();
                             // Update the user's information
                             userRef.child("status").setValue("Approved");
+                            // sending email to notify of status change
+                            try {
+                                sendingEmail(User.getUserName(), "Account Status Change", "Your account status has changed.");
+                            } catch (MessagingException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
 

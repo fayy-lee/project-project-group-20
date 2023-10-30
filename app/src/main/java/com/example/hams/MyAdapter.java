@@ -1,5 +1,7 @@
 package com.example.hams;
 
+import static com.example.hams.sendEmail.sendingEmail;
+
 import android.content.Context;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -17,6 +19,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
     //ADAPTER FOR PENDING USERS
@@ -75,6 +79,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
                             DatabaseReference userRef = userSnapshot.getRef();
                             // Update the user's information
                             userRef.child("status").setValue("Approved");
+                            // sending the email to notify
+                            try {
+                                sendingEmail(User.getUserName(), "Account Status Change", "Your account status has changed.");
+                            } catch (MessagingException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
 
@@ -99,6 +109,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
                         for(DataSnapshot userSnapshot : snapshot.getChildren()){
                             DatabaseReference userRef = userSnapshot.getRef();
                             userRef.child("status").setValue("Rejected");
+                            try {
+                                sendingEmail(User.getUserName(), "Account Status Change", "Your account status has changed.");
+                            } catch (MessagingException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
 
