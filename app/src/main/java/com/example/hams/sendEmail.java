@@ -8,7 +8,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-/*public class sendEmail {
+public class sendEmail {
 
     public static void sendingEmail(String to, String subject, String messageBody) throws MessagingException {
         Properties properties = new Properties();
@@ -33,4 +33,4 @@ import javax.mail.internet.MimeMessage;
         Transport.send(message);
     }
 
-}*/
+}
