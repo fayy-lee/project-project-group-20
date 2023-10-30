@@ -11,12 +11,6 @@
         tools:text="APPROVED"
         android:layout_below="@+id/recyclerview"
         />
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerview"
-        />
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
@@ -29,6 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerview"
+        />
 
 
 </RelativeLayout>

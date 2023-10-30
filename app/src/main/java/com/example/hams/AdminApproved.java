@@ -35,6 +35,7 @@ public class AdminApproved extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     DatabaseReference usersRef = MainActivity.usersRef;
     Query approvedUsersQuery = usersRef.orderByChild("status").equalTo("Approved");
+    List<Patient> approvedPatients = AdminPending.approvedPatients;
 
     public void setApprovedView(){
         Intent intent = new Intent(this, AdminApproved.class);
@@ -58,7 +59,6 @@ public class AdminApproved extends AppCompatActivity {
 
         RecyclerView recyclerViewApproved = findViewById(R.id.recyclerview);
 
-        List<Patient> approvedPatients = new ArrayList<>();
         Context context = this;
 
 
@@ -89,7 +89,7 @@ public class AdminApproved extends AppCompatActivity {
                 }
 
                 recyclerViewApproved.setLayoutManager(new LinearLayoutManager(context));
-                recyclerViewApproved.setAdapter(new ApprovedAdapter(getApplicationContext(), approvedPatients));
+                recyclerViewApproved.setAdapter(new ApprovedAdapter(getApplicationContext()));
             }
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle errors if any
@@ -100,22 +100,22 @@ public class AdminApproved extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case 2131362341: //int value of the R.id.menu_approved
+                case 2131362086: //int value of the R.id.menu_approved
                     // Load "Approved" users
                     Log.d("Info", "SHOULD BE SETTING APPROVED");
                     setApprovedView();
                     return true;
-                case 2131362342: //pending view
+                case 2131362087: //pending view
                     Log.d("Info", "SHOULD BE SETTING PENDING");
                     setPendingView();
                     return true;
-                case 2131362343: //R.id.menu_rejected
+                case 2131362088: //R.id.menu_rejected
                     //IMPLEMENT THIS WITH REJCTED AS WELL
                     Log.d("Info", "SHOULD BE SETTING REJECTED");
                     setRejectedView();
                     return true;
                 default:
-                    Log.d("Info", "DEFAULTINGGGG");
+                    Log.d("Info", "DEFAULTING");
                     return false;
             }
 
