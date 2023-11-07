@@ -90,6 +90,12 @@ public class Doctor extends User{
     public List <Appointment> getPastAppointments(){
         return pastAppointments;
     };
+    public List <Shift> getShifts(){
+        return shifts;
+    }
+    public boolean isAutoApproveAppointment(){
+        return autoApproveAppointments;
+    }
     public void addUpcomingAppointment(Appointment appointment){
         upcomingAppointments.add(appointment);
     }
