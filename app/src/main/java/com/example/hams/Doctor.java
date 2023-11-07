@@ -1,5 +1,7 @@
 package com.example.hams;
 
+import java.util.ArrayList;
+
 public class Doctor extends User{
     String firstName;
     String lastName;
@@ -10,6 +12,11 @@ public class Doctor extends User{
 
     public Doctor(){
         super();
+        upcomingAppointments = new ArrayList<>();
+        pastAppointments= new ArrayList<>();
+        shifts = new ArrayList<>();
+        autoApproveAppointments = false;
+
     }
     /*public Doctor(String user, String pass, String first, String last,
                 String phone, String address,
@@ -77,11 +84,16 @@ public class Doctor extends User{
     }
     // making an list of pst and upcoming appointments.
 
-    List <Appointment> upcomingAppointments;
-    List <Appointment> pastAppointments;
-    
+    public List <Appointment> getUpcomingAppointments(){
+        return upcomingAppointments;
+    };
+    public List <Appointment> getPastAppointments(){
+        return pastAppointments;
+    };
     public void addUpcomingAppointment(Appointment appointment){
-        
+        upcomingAppointments.add(appointment);
+    }
+    public void addPastAppoitment (Appointment appointment){
     }
 
 
