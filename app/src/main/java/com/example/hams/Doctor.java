@@ -75,5 +75,14 @@ public class Doctor extends User{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    // making an list of pst and upcoming appointments.
+
+    List <Appointment> upcomingAppointments;
+    List <Appointment> pastAppointments;
+    
+    public void addUpcomingAppointment(Appointment appointment){
+        
+    }
+
 
 }
