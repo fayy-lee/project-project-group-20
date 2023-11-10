@@ -9,6 +9,10 @@ public class Doctor extends User{
     String address;
     String employeeNumber;
     String specialties;
+    ArrayList<Appointment> upcomingAppointments;
+    ArrayList<Appointment> pastAppointments;
+    ArrayList<Shift> shifts;
+    Boolean autoApproveAppointments;
 
     public Doctor(){
         super();
@@ -84,13 +88,13 @@ public class Doctor extends User{
     }
     // making an list of pst and upcoming appointments.
 
-    public List <Appointment> getUpcomingAppointments(){
+    public ArrayList<Appointment> getUpcomingAppointments(){
         return upcomingAppointments;
     };
-    public List <Appointment> getPastAppointments(){
+    public ArrayList<Appointment> getPastAppointments(){
         return pastAppointments;
     };
-    public List <Shift> getShifts(){
+    public ArrayList<Shift> getShifts(){
         return shifts;
     }
     public boolean isAutoApproveAppointment(){

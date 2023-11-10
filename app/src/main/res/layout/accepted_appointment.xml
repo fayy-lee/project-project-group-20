@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:layout_marginLeft="10dp"
+        tools:text="Date" />
+
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/patient"
+        android:layout_below="@+id/date"
+        android:layout_marginTop="5dp"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        tools:text="Patient"
+        />
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/startTime"
+        android:layout_below="@+id/patient"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        tools:text="12:00"
+        />
+
+
+    <Button
+        android:id="@+id/reject"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="0dp"
+        android:layout_above="@+id/div"
+        android:backgroundTint="#EA1818"
+        android:textSize="15dp"
+        tools:text="Cancel" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:id="@+id/div"
+        android:layout_below="@+id/startTime"
+        android:background="@color/cardview_shadow_start_color"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" />
+
+
+</RelativeLayout>

@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public static FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static DatabaseReference dbReference = database.getReference();
     public static DatabaseReference usersRef = dbReference.child("Users");
+    public static DatabaseReference appointmentsRef = dbReference.child("Appointments");
 
     private static int SPLASH_SCREEN = 5000;
 
