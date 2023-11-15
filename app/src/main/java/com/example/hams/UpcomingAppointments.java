@@ -2,6 +2,7 @@ package com.example.hams;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,8 +26,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime; // Import the LocalDateTime class
+import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
+
 
 public class UpcomingAppointments extends AppCompatActivity {
 
@@ -35,6 +40,7 @@ public class UpcomingAppointments extends AppCompatActivity {
     public static List<Appointment> upcomingAppointmentList = new ArrayList<>(); //holds all the upcoming appointments
     //fills with only the specific doctor's upcoming appointments using firebase query
     public static List<Appointment> approvedAppointmentList = new ArrayList<>();
+    public static List<Appointment> pastAppointmentList = new ArrayList<>();
 
 
     Query appointmentsQuery;
@@ -98,23 +104,31 @@ public class UpcomingAppointments extends AppCompatActivity {
                 Log.d("Info","DOCTOR NAME: "+employeeNumber);
                 appointmentsQuery = appointmentsRef.orderByChild("doctorID").equalTo(employeeNumber);
 
-                
+
                 appointmentsQuery.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         upcomingAppointmentList.clear();
                         approvedAppointmentList.clear();
+                        pastAppointmentList.clear();
                         // Iterate through the dataSnapshot to get the appointments
                         for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
                             Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
                             if(appointment != null){
-                                if(appointment.getStatus().equals("Pending")){
-                                    upcomingAppointmentList.add(appointment);
+                                /*if(appointment.isPastAppointment()){
+                                    Log.d("info", "past appointment date: "+appointment.getDate());
+                                    pastAppointmentList.add(appointment);
+                                }*/
+                                    if(appointment.getStatus().equals("Pending")){
+                                        upcomingAppointmentList.add(appointment);
 
-                                } else if(appointment.getStatus().equals("Approved")){
-                                    approvedAppointmentList.add(appointment);
+                                    } else if(appointment.getStatus().equals("Approved")){
+                                        approvedAppointmentList.add(appointment);
 
-                                }
+                                    }
+
+
+
                             }
 
                         }

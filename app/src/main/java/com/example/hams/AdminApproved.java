@@ -109,16 +109,16 @@ public class AdminApproved extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case 2131362086: //int value of the R.id.menu_approved
+                case 2131362091: //int value of the R.id.menu_approved
                     // Load "Approved" users
                     Log.d("Info", "SHOULD BE SETTING APPROVED");
                     setApprovedView();
                     return true;
-                case 2131362087: //pending view
+                case 2131362092: //pending view
                     Log.d("Info", "SHOULD BE SETTING PENDING");
                     setPendingView();
                     return true;
-                case 2131362088: //R.id.menu_rejected
+                case 2131362093: //R.id.menu_rejected
                     //IMPLEMENT THIS WITH REJCTED AS WELL
                     Log.d("Info", "SHOULD BE SETTING REJECTED");
                     setRejectedView();
