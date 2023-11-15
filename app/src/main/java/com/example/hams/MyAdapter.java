@@ -31,8 +31,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     Context context;
     //list of patients to display
     List<User> pendingList = AdminPending.pendingUsers;
-    List<User> approvedList = AdminPending.approvedUsers;
-    List<User> rejectedList = AdminPending.rejectedUsers;
 
     public MyAdapter(Context context) {
         this.context = context;

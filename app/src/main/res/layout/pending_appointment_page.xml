@@ -13,7 +13,7 @@
         android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Upcoming Appointments"
+        android:text="Upcoming Appointments - Requested"
         />
 
     <Button
@@ -26,21 +26,28 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="#0DCD20"
         android:textSize="15dp"
-        tools:text="Accept All" />
+        android:text="Accept All" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/autoApprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:text="Auto-Accept "
         android:layout_marginRight="20dp"
-        android:layout_below="@+id/title"
-        android:text="Auto-Accept" />
+        android:layout_below="@id/title"
+        android:layout_alignParentEnd="true" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="UPCOMING APPOINTMENTS"
-        android:layout_below="@+id/recyclerviewUpcoming"
+        android:layout_below="@+id/appointment_recyclerView"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appointment_recyclerView"
+        android:layout_below="@+id/accept_all"
         />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -49,13 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/appointment_bottom_navigation" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerviewUpcoming"
-        android:layout_below="@+id/accept_all"
-        />
+
 
 
 </RelativeLayout>

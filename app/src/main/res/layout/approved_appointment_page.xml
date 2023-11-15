@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/title"
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="PAST APPOINTMENTS"
-        android:layout_below="@+id/recyclerview"
+        android:text="Upcoming Appointments - Approved"
         />
 
     <FrameLayout
@@ -23,10 +25,11 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/appointment_bottom_navigation" />
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/title"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recyclerview"
+        android:id="@+id/recyclerviewApproved"
         />
 
 

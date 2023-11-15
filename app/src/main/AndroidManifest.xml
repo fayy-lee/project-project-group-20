@@ -76,6 +76,15 @@
         <activity
             android:name=".Dashboard"
             android:exported="false" />
+
+        <activity
+            android:name=".UpcomingAppointments"
+            android:exported="false" />
+
+        <activity
+            android:name=".ApprovedAppointments"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

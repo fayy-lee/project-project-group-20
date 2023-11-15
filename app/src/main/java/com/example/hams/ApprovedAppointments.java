@@ -1,24 +1,76 @@
 package com.example.hams;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class ApprovedAppointments extends AppCompatActivity {
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
+    FirebaseAuth mAuth;
+    DatabaseReference usersRef = MainActivity.usersRef;
+    List<Appointment> upcomingAppointmentList = UpcomingAppointments.upcomingAppointmentList;
+    List<Appointment> approvedAppointmentList = UpcomingAppointments.approvedAppointmentList;
 
+    Query approvedAppointmentsQuery;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.approved_appointment_page);
+        Context context = this;
+        RecyclerView recyclerViewApproved = findViewById(R.id.recyclerviewApproved);
 
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        //currently signed in user
+        FirebaseUser user = mAuth.getCurrentUser();
+        DatabaseReference userRef = usersRef.child(user.getUid());
+        approvedAppointmentsQuery = appointmentsRef.orderByChild("doctorName").equalTo("docone");
+        //TODO: change so it actually takes the doctor's name
+
+        approvedAppointmentsQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                approvedAppointmentList.clear();
+                // Iterate through the dataSnapshot to get the appointments
+                for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
+                    Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
+                    if(appointment != null){
+                        if(appointment.getStatus().equals("Approved")){
+                            approvedAppointmentList.add(appointment);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        recyclerViewApproved.setLayoutManager(new LinearLayoutManager(context));
+        recyclerViewApproved.setAdapter(new ApprovedAppointmentAdapter(getApplicationContext()));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
@@ -27,13 +79,13 @@ public class ApprovedAppointments extends AppCompatActivity {
             Log.d("Info", "item id/page: " + item.getItemId());
             Log.d("Info", "item ID printing?");
             switch (item.getItemId()) {
-                case 2131362086: //int value of the R.id.menu_approved
+                case 2131362091: //int value of the R.id.menu_approved
                     // Load "Approved" users
-                    Log.d("Info", "switch to upcoming appointments");
-                    startActivity(new Intent(ApprovedAppointments.this, UpcomingAppointments.class));
+                    Log.d("Info", "approved appointments");
                     return true;
-                case 2131362087: //pending view
-                    Log.d("Info", "switch back to approved appointments");
+                case 2131362093: //pending view
+                    Log.d("Info", "pending appointments");
+                    startActivity(new Intent(ApprovedAppointments.this, UpcomingAppointments.class));
                     return true;
                 default:
                     Log.d("Info", "DEFAULTINGGGG");

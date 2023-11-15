@@ -75,7 +75,6 @@ public class AdminPending extends AppCompatActivity {
 
                     if (userType.equals("Patient")) {
                         Log.d("Info", "patient detected in firebase");
-                        //only add patients to this list, because only patients will fit with this type of view
                         Patient patient = userSnapshot.getValue(Patient.class);
                         if (patient != null) {
                             //add to the list
@@ -85,7 +84,6 @@ public class AdminPending extends AppCompatActivity {
                     }
                     else if (userType.equals("Doctor")) {
                         Log.d("Info", "doctor detected in firebase");
-                        //only add patients to this list, because only patients will fit with this type of view
                         Doctor doctor = userSnapshot.getValue(Doctor.class);
                         if (doctor != null) {
                             //add to the list

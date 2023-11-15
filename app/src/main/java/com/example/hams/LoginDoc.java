@@ -1,5 +1,7 @@
 package com.example.hams;
 
+import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ public class LoginDoc extends AppCompatActivity {
     FirebaseUser fUser;
     FirebaseDatabase database = MainActivity.database;
     DatabaseReference usersRef = MainActivity.usersRef;
+    DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -40,7 +43,6 @@ public class LoginDoc extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-         //checks pending CHANGE TO APPRIVED
 
 
         button = (Button) findViewById(R.id.button);
@@ -79,6 +81,24 @@ public class LoginDoc extends AppCompatActivity {
 
     }
     public void openLogin(){
+
+        for(int i = 1; i<6; i++){
+            Appointment testA = new Appointment();
+            testA.setDate("jan "+i+" 2024");
+            testA.setStartTime("2:00 pm");
+            Patient p = new Patient();
+            p.setFirstName("Patient " + i);
+            testA.setPatient(p);
+            testA.setDoctorName("docone");
+            testA.setPatientName(p.getFirstName());
+            String appointmentId = appointmentsRef.push().getKey();
+            Log.d("Info", "appointment ID: " + appointmentId);
+            testA.setAppointmentID(appointmentId);
+            appointmentsRef.child(appointmentId).setValue(testA);
+
+            upcomingAppointmentList.add(testA);
+            Log.d("Info", "appointment added: " + i);
+        }
         Intent intent = new Intent(this, DocView.class);
         startActivity(intent);
     }
