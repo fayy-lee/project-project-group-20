@@ -19,7 +19,7 @@ public class Doctor extends User{
         upcomingAppointments = new ArrayList<>();
         pastAppointments= new ArrayList<>();
         shifts = new ArrayList<>();
-        autoApproveAppointments = false;
+        setAutoApproveAppointments(false);
 
     }
     /*public Doctor(String user, String pass, String first, String last,
@@ -39,6 +39,14 @@ public class Doctor extends User{
             //automatically set to active, WILL CHANGE LATER
         
     }*/
+
+    public Boolean getAutoApproveAppointments() {
+        return autoApproveAppointments;
+    }
+
+    public void setAutoApproveAppointments(Boolean autoApproveAppointments) {
+        this.autoApproveAppointments = autoApproveAppointments;
+    }
 
     public String getAddress() {
         return address;
@@ -97,9 +105,7 @@ public class Doctor extends User{
     public ArrayList<Shift> getShifts(){
         return shifts;
     }
-    public boolean isAutoApproveAppointment(){
-        return autoApproveAppointments;
-    }
+
     public void addUpcomingAppointment(Appointment appointment){
         upcomingAppointments.add(appointment);
     }

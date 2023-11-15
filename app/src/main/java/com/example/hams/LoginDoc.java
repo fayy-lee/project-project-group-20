@@ -84,7 +84,7 @@ public class LoginDoc extends AppCompatActivity {
 
         for(int i = 1; i<6; i++){
             Appointment testA = new Appointment();
-            testA.setDate("jan "+i+" 2024");
+            testA.setDate("FEB "+i+" 2024");
             testA.setStartTime("2:00 pm");
             Patient p = new Patient();
             p.setFirstName("Patient " + i);

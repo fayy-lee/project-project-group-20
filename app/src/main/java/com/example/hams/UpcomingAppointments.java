@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,36 @@ public class UpcomingAppointments extends AppCompatActivity {
         //currently signed in user
         FirebaseUser user = mAuth.getCurrentUser();
         DatabaseReference userRef = usersRef.child(user.getUid());
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Boolean autoApproveAppointments = snapshot.child("autoApproveAppointments").getValue(Boolean.class);
+                Log.d("info","is auto approve enabled: "+ autoApproveAppointments);
+                autoApprove.setChecked(autoApproveAppointments);
+
+                autoApprove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        Log.d("info","auto-accept checked to: "+ autoApprove.isChecked());
+                        snapshot.getRef().child("autoApproveAppointments").setValue(autoApprove.isChecked());
+                    }
+                });
+
+                if(autoApproveAppointments){
+                    approveAll();
+                    recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerViewPending.setAdapter(new PendingAppointmentAdapter(getApplicationContext()));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
         //strictly to read the name of the current doctor
@@ -75,37 +106,13 @@ public class UpcomingAppointments extends AppCompatActivity {
             }
         });*/
 
+
+
         acceptAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("INFO","Approve all clicked.");
-                for(Appointment appointment : upcomingAppointmentList){
-
-                    approvedAppointmentList.add(appointment);
-                    //find the specific appointment by its ID
-                    Query appointmentsQuery = appointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID());
-                    Log.d("INFO", "Appointment for id: "+appointment.getAppointmentID());
-                    appointmentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(!snapshot.exists()){
-                                Log.d("INFO","nothing in the query");
-                            }
-                            Log.d("INFO","in on data change method");
-                            for(DataSnapshot appointmentSnapshot : snapshot.getChildren()){
-                                //reference the specific appointment
-                                DatabaseReference appointmentRef = appointmentSnapshot.getRef();
-                                appointmentRef.child("status").setValue("Approved");
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
+                approveAll();
                 //upcomingAppointmentList.clear();
                 Log.d("info","Approvedlist.size: "+approvedAppointmentList.size());
                 Log.d("info","pendinglist.size: "+upcomingAppointmentList.size());
@@ -130,11 +137,9 @@ public class UpcomingAppointments extends AppCompatActivity {
                     if(appointment != null){
                         if(appointment.getStatus().equals("Pending")){
                             upcomingAppointmentList.add(appointment);
-                            Log.d("Info","Adding pending");
 
                         } else if(appointment.getStatus().equals("Approved")){
                             approvedAppointmentList.add(appointment);
-                            Log.d("Info","Adding approved");
 
                         }
                     }
@@ -175,5 +180,35 @@ public class UpcomingAppointments extends AppCompatActivity {
                     return false;
             }
         });
+    }
+
+    public void approveAll(){
+        for(Appointment appointment : upcomingAppointmentList){
+
+            approvedAppointmentList.add(appointment);
+            //find the specific appointment by its ID
+            Query appointmentsQuery = appointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID());
+            Log.d("INFO", "Appointment for id: "+appointment.getAppointmentID());
+            appointmentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(!snapshot.exists()){
+                        Log.d("INFO","nothing in the query");
+                    }
+                    Log.d("INFO","in on data change method");
+                    for(DataSnapshot appointmentSnapshot : snapshot.getChildren()){
+                        //reference the specific appointment
+                        DatabaseReference appointmentRef = appointmentSnapshot.getRef();
+                        appointmentRef.child("status").setValue("Approved");
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 }
