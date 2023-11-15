@@ -44,23 +44,39 @@ public class ApprovedAppointments extends AppCompatActivity {
         //currently signed in user
         FirebaseUser user = mAuth.getCurrentUser();
         DatabaseReference userRef = usersRef.child(user.getUid());
-        approvedAppointmentsQuery = appointmentsRef.orderByChild("doctorName").equalTo("docone");
-        //TODO: change so it actually takes the doctor's name
 
-        approvedAppointmentsQuery.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                approvedAppointmentList.clear();
-                // Iterate through the dataSnapshot to get the appointments
-                for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
-                    Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
-                    if(appointment != null){
-                        if(appointment.getStatus().equals("Approved")){
-                            approvedAppointmentList.add(appointment);
+                //query to get the appointments associated with the right doctor
+                String employeeNumber = snapshot.child("employeeNumber").getValue(String.class);
+                Log.d("Info","DOCTOR NAME: "+employeeNumber);
+                approvedAppointmentsQuery = appointmentsRef.orderByChild("doctorID").equalTo(employeeNumber);
+                //now read from the query data
+                approvedAppointmentsQuery.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        approvedAppointmentList.clear();
+                        // Iterate through the dataSnapshot to get the appointments
+                        for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
+                            Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
+                            if(appointment != null){
+                                if(appointment.getStatus().equals("Approved")){
+                                    approvedAppointmentList.add(appointment);
+                                }
+                            }
+
                         }
                     }
 
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                recyclerViewApproved.setLayoutManager(new LinearLayoutManager(context));
+                recyclerViewApproved.setAdapter(new ApprovedAppointmentAdapter(getApplicationContext()));
             }
 
             @Override
@@ -69,8 +85,7 @@ public class ApprovedAppointments extends AppCompatActivity {
             }
         });
 
-        recyclerViewApproved.setLayoutManager(new LinearLayoutManager(context));
-        recyclerViewApproved.setAdapter(new ApprovedAppointmentAdapter(getApplicationContext()));
+
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 

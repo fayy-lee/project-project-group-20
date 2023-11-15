@@ -9,13 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AppointmentViewHolder extends RecyclerView.ViewHolder {
     //reference elements from appointment
-    TextView date, patient, startTime;
+    TextView date, firstName, lastName, email, address, phone, healthCard, startTime;
     Button accept, reject;
     public AppointmentViewHolder(@NonNull View itemView) {
         super(itemView);
         //actually reference the views
         date = itemView.findViewById(R.id.date);
-        patient = itemView.findViewById(R.id.patient);
+        firstName = itemView.findViewById(R.id.firstname);
+        lastName = itemView.findViewById(R.id.lastname);
+        email = itemView.findViewById(R.id.email);
+        address = itemView.findViewById(R.id.address);
+        phone = itemView.findViewById(R.id.phoneNumber);
+        healthCard = itemView.findViewById(R.id.healthCard);
         startTime = itemView.findViewById(R.id.startTime);
 
         //reference buttons too, so they'll have text on them lol

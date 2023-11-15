@@ -39,9 +39,13 @@ public class ApprovedAppointmentAdapter extends RecyclerView.Adapter<Appointment
 
         holder.date.setText(a.getDate());
         holder.startTime.setText(a.getStartTime());
-        holder.patient.setText(a.getPatient().getFirstName() + " " + a.getPatient().getLastName());
+        holder.firstName.setText(a.getPatient().getFirstName());
+        holder.lastName.setText(a.getPatient().getLastName());
+        holder.email.setText(a.getPatient().getUserName());
+        holder.address.setText(a.getPatient().getAddress());
+        holder.phone.setText(a.getPatient().getPhoneNo());
+        holder.healthCard.setText(a.getPatient().getHealthCard());
 
-        //holder.accept.setText("Confirm");
         holder.reject.setText("Cancel");
 
         holder.reject.setOnClickListener(new View.OnClickListener() {

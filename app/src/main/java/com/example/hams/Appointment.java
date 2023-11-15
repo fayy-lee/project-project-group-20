@@ -8,7 +8,7 @@ public class Appointment {
     private Patient patient;
     private String patientName;
 
-    private String doctorName;
+    private String doctorID;
     private String status;
     private String appointmentID;
 
@@ -59,12 +59,12 @@ public class Appointment {
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
-    public String getDoctorName() {
-        return doctorName;
+    public String getDoctorID() {
+        return doctorID;
     }
 
-    public void setDoctorName(String doctor) {
-        this.doctorName = doctor;
+    public void setDoctorID(String doctorID) {
+        this.doctorID = doctorID;
     }
 
 }

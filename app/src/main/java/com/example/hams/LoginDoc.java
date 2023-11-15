@@ -80,8 +80,10 @@ public class LoginDoc extends AppCompatActivity {
         });
 
     }
-    public void openLogin(){
+    public void openLogin(String docID){
 
+        //TODO: when patient functionality is here, make them create the appointments, not in the log in here
+        //this was only for testing purposes so we'd have a set of
         for(int i = 1; i<6; i++){
             Appointment testA = new Appointment();
             testA.setDate("FEB "+i+" 2024");
@@ -89,7 +91,7 @@ public class LoginDoc extends AppCompatActivity {
             Patient p = new Patient();
             p.setFirstName("Patient " + i);
             testA.setPatient(p);
-            testA.setDoctorName("docone");
+            testA.setDoctorID(docID);
             testA.setPatientName(p.getFirstName());
             String appointmentId = appointmentsRef.push().getKey();
             Log.d("Info", "appointment ID: " + appointmentId);
@@ -126,7 +128,8 @@ public class LoginDoc extends AppCompatActivity {
                         //proceed to login as normal
                         Toast.makeText(LoginDoc.this, "Login successful.",
                                 Toast.LENGTH_SHORT).show();
-                        openLogin();
+                        //TODO: remove the parameter from login once patients can create appointments
+                        openLogin(snapshot.child("employeeNumber").getValue(String.class));
                     } else if(userStatus.equals("Pending")){
                         //give pending message, send back to splash
                         Toast.makeText(LoginDoc.this, "Account approval pending.",

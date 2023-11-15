@@ -90,21 +90,54 @@ public class UpcomingAppointments extends AppCompatActivity {
 
 
         //strictly to read the name of the current doctor
-        /*userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //query to get the appointments associated with the right doctor
-                String doctorName = snapshot.child("firstName").getValue(String.class);
-                Log.d("Info","DOCTOR NAME: "+doctorName);
-                appointmentsQuery = appointmentsRef.orderByChild("doctorName").equalTo(doctorName);
+                String employeeNumber = snapshot.child("employeeNumber").getValue(String.class);
+                Log.d("Info","DOCTOR NAME: "+employeeNumber);
+                appointmentsQuery = appointmentsRef.orderByChild("doctorID").equalTo(employeeNumber);
 
+                
+                appointmentsQuery.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        upcomingAppointmentList.clear();
+                        approvedAppointmentList.clear();
+                        // Iterate through the dataSnapshot to get the appointments
+                        for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
+                            Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
+                            if(appointment != null){
+                                if(appointment.getStatus().equals("Pending")){
+                                    upcomingAppointmentList.add(appointment);
+
+                                } else if(appointment.getStatus().equals("Approved")){
+                                    approvedAppointmentList.add(appointment);
+
+                                }
+                            }
+
+                        }
+                        Log.d("INFO", "pending size: "+upcomingAppointmentList.size());
+                        Log.d("INFO","approved size: "+approvedAppointmentList.size());
+                        //send data to the adapter to bind it to the view
+                        recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
+                        recyclerViewPending.setAdapter(new PendingAppointmentAdapter(getApplicationContext()));
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });*/
+        });
 
 
 
@@ -122,42 +155,7 @@ public class UpcomingAppointments extends AppCompatActivity {
             }
         });
 
-        appointmentsQuery = appointmentsRef.orderByChild("doctorName").equalTo("docone");
-        //TODO: change to find current doctor's name
-        //Query pendingAppointmentsQuery = appointmentsQuery.orderByChild("status").equalTo("Pending");
-        //now read from the query data
-        appointmentsQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                upcomingAppointmentList.clear();
-                approvedAppointmentList.clear();
-                // Iterate through the dataSnapshot to get the appointments
-                for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
-                    Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
-                    if(appointment != null){
-                        if(appointment.getStatus().equals("Pending")){
-                            upcomingAppointmentList.add(appointment);
 
-                        } else if(appointment.getStatus().equals("Approved")){
-                            approvedAppointmentList.add(appointment);
-
-                        }
-                    }
-
-                }
-                Log.d("INFO", "pending size: "+upcomingAppointmentList.size());
-                Log.d("INFO","approved size: "+approvedAppointmentList.size());
-                //send data to the adapter to bind it to the view
-                recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
-                recyclerViewPending.setAdapter(new PendingAppointmentAdapter(getApplicationContext()));
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
