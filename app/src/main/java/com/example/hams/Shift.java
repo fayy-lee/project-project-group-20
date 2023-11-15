@@ -1,19 +1,28 @@
 package com.example.hams;
 
-Import  java.util.ArrayList;
+import android.os.Build;
+
+
+import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.LocalDate;
+
 
 public class Shift {
     private String date;
     private String startTime;
     private String endTime;
 
+    public Shift(){
+
+    }
+
     public Shift(String date, String startTime, String endTime) {
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        new Shift();
+        this.setDate(date);
+        this.setStartTime(startTime);
+        this.setEndTime(endTime);
     }
 
     public String getDate() {
@@ -41,6 +50,7 @@ public class Shift {
     }
 
     public boolean isValidTimeIncrement() {
+
         LocalTime start = LocalTime.parse(startTime);
         LocalTime end = LocalTime.parse(endTime);
 

@@ -1,9 +1,16 @@
 package com.example.hams;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
+
 public class Appointment {
 
-    private String date;
+    private LocalDate date;
 
     private String startTime;
     private String endTime;
@@ -32,11 +39,19 @@ public class Appointment {
         return appointmentID;
     }
 
-    public void setDate(String date){
-        this.date = date;
+    public void setDate(String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Parse the string into a LocalDate using the defined formatter
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        this.date = localDate;
     }
+
     public String getDate(){
-        return date;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dateString = this.date.format(formatter);
+        return dateString;
     }
 
 
@@ -74,6 +89,10 @@ public class Appointment {
 
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
+    }
+    public boolean isPastAppointment() {
+        LocalDate currentDate = LocalDate.now();
+        return date.isBefore(currentDate);
     }
     // Calculate end time assuming a 1-hour duration
     private String calculateEndTime(String startTime) {

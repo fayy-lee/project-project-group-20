@@ -3,6 +3,7 @@ package com.example.hams;
 import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,7 +87,7 @@ public class LoginDoc extends AppCompatActivity {
         //this was only for testing purposes so we'd have a set of
         for(int i = 1; i<6; i++){
             Appointment testA = new Appointment();
-            testA.setDate("FEB "+i+" 2024");
+            testA.setDate("2022-11-15");
             testA.setStartTime("2:00 pm");
             Patient p = new Patient();
             p.setFirstName("Patient " + i);
