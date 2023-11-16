@@ -84,6 +84,9 @@
         <activity
             android:name=".ApprovedAppointments"
             android:exported="false" />
+        <activity
+            android:name=".PastAppointments"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

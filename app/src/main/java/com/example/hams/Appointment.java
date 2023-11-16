@@ -3,14 +3,13 @@ package com.example.hams;
 
 import android.os.Build;
 
-import androidx.annotation.RequiresApi;
-
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.format.DateTimeFormatter;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
 
-    private LocalDate date;
+    private String date;
+    //private String dateString;
 
     private String startTime;
     private String endTime;
@@ -40,19 +39,20 @@ public class Appointment {
     }
 
     public void setDate(String dateString){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Parse the string into a LocalDate using the defined formatter
-        LocalDate localDate = LocalDate.parse(dateString, formatter);
-        this.date = localDate;
+        LocalDate localDate = LocalDate.parse(dateString, formatter);*/
+
+        this.date = dateString;
     }
 
     public String getDate(){
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateString = this.date.format(formatter);
-        return dateString;
+       return this.date;
     }
+    /*public String getDateString(){
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }*/
 
 
     public Patient getPatient() {
@@ -90,10 +90,10 @@ public class Appointment {
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
-    public boolean isPastAppointment() {
+    /*public boolean isPastAppointment() {
         LocalDate currentDate = LocalDate.now();
-        return date.isBefore(currentDate);
-    }
+        return (date != null)&&(date.isBefore(currentDate));
+    }*/
     // Calculate end time assuming a 1-hour duration
     private String calculateEndTime(String startTime) {
         // Assuming startTime is in "HH:mm" format and appointments last 1 hour

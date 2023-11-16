@@ -93,9 +93,6 @@ public class AdminApproved extends AppCompatActivity {
                         }
                     }
                 }
-                for(User u:approvedUsers){
-                    Log.d("Info","APPROVED u: "+u.getUserName());
-                }
 
                 recyclerViewApproved.setLayoutManager(new LinearLayoutManager(context));
                 recyclerViewApproved.setAdapter(new ApprovedAdapter(getApplicationContext()));

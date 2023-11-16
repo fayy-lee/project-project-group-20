@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class LoginDoc extends AppCompatActivity {
 
@@ -95,7 +97,6 @@ public class LoginDoc extends AppCompatActivity {
             testA.setDoctorID(docID);
             testA.setPatientName(p.getFirstName());
             String appointmentId = appointmentsRef.push().getKey();
-            Log.d("Info", "appointment ID: " + appointmentId);
             testA.setAppointmentID(appointmentId);
             appointmentsRef.child(appointmentId).setValue(testA);
 
