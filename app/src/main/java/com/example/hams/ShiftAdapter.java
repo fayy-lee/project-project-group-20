@@ -8,14 +8,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> {
 
     private List<Shift> shiftList;
+    private OnShiftClickListener onShiftClickListener;
 
-    public ShiftAdapter(List<Shift> shiftList) {
+    public ShiftAdapter(List<Shift> shiftList, OnShiftClickListener onShiftClickListener) {
         this.shiftList = shiftList;
+        this.onShiftClickListener = onShiftClickListener;
     }
 
     @NonNull
@@ -28,7 +32,6 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Shift shift = shiftList.get(position);
-
         holder.bind(shift);
     }
 
@@ -42,6 +45,10 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public interface OnShiftClickListener {
+        void onShiftClick(int position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewDate;
         private TextView textViewTime;
@@ -53,9 +60,17 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         }
 
         public void bind(Shift shift) {
-            // Bind data to views
             textViewDate.setText("Date: " + shift.getDate());
             textViewTime.setText("Time: " + shift.getStartTime() + " - " + shift.getEndTime());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onShiftClickListener != null) {
+                        onShiftClickListener.onShiftClick(getAdapterPosition());
+                    }
+                }
+            });
         }
     }
 }
