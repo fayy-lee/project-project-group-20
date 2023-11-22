@@ -58,14 +58,16 @@ public class PastAppointments extends AppCompatActivity {
                         for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
                             Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
                             if(appointment != null){
-                                Log.d("info","ispast? "+ appointment.isPastAppointment());
-                                if(appointment.isPastAppointment() == true){
-                                    Log.d(" info"," APPOINTMENT IS PAST!!");
+                                Log.d("info","ispast? "+ appointment.getIsPastAppointment());
+                                if(appointment.getIsPastAppointment()){
                                     pastAppointmentList.add(appointment);
                                 }
+                                Log.d(" info"," past appointment size: "+pastAppointmentList.size());
                             }
 
                         }
+                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                        recyclerView.setAdapter(new PastAppointmentAdapter(getApplicationContext()));
                     }
 
                     @Override
@@ -74,8 +76,7 @@ public class PastAppointments extends AppCompatActivity {
                     }
                 });
 
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(new PastAppointmentAdapter(getApplicationContext()));
+
             }
 
             @Override

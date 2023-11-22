@@ -36,7 +36,7 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<AppointmentView
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
-        Appointment a = approvedAppointmentList.get(position);
+        Appointment a = pastAppointmentList.get(position);
 
         holder.date.setText(a.getDate());
         holder.startTime.setText(a.getStartTime());

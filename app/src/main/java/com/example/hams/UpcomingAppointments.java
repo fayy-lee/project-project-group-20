@@ -110,18 +110,22 @@ public class UpcomingAppointments extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         upcomingAppointmentList.clear();
                         approvedAppointmentList.clear();
-                        //pastAppointmentList.clear();
+                        pastAppointmentList.clear();
                         // Iterate through the dataSnapshot to get the appointments
                         for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
                             Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
                             if(appointment != null){
+                                if(!appointment.getIsPastAppointment()){
+                                    if(appointment.getStatus().equals("Pending")){
+                                        upcomingAppointmentList.add(appointment);
 
-                                if(appointment.getStatus().equals("Pending")){
-                                    upcomingAppointmentList.add(appointment);
-
-                                } else if(appointment.getStatus().equals("Approved")){
-                                    approvedAppointmentList.add(appointment);
+                                    } else if(appointment.getStatus().equals("Approved")){
+                                        approvedAppointmentList.add(appointment);
+                                    }
+                                } else{
+                                    Log.d("info","past appointments only :/");
                                 }
+
 
 
 

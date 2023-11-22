@@ -23,7 +23,7 @@ public class Appointment {
     private String doctorID;
     private String status;
     private String appointmentID;
-    private String isPastAppointment;
+    private boolean isPastAppointment;
 
     public Appointment(){
 
@@ -55,9 +55,6 @@ public class Appointment {
     public String getDate(){
        return this.date;
     }
-    /*public String getDateString(){
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    }*/
 
 
     public Patient getPatient() {
@@ -98,7 +95,7 @@ public class Appointment {
     public void setIsPastAppointment(){
         return;
     }
-    public boolean isPastAppointment() {
+    public boolean getIsPastAppointment() {
         if (date == null || date.isEmpty()) {
             return false; // Handle the case where 'date' is empty or null
         }
