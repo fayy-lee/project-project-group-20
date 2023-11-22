@@ -104,25 +104,26 @@ public class AdminApproved extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case 2131362091: //int value of the R.id.menu_approved
-                    // Load "Approved" users
-                    Log.d("Info", "SHOULD BE SETTING APPROVED");
-                    setApprovedView();
-                    return true;
-                case 2131362092: //pending view
-                    Log.d("Info", "SHOULD BE SETTING PENDING");
-                    setPendingView();
-                    return true;
-                case 2131362093: //R.id.menu_rejected
-                    //IMPLEMENT THIS WITH REJCTED AS WELL
-                    Log.d("Info", "SHOULD BE SETTING REJECTED");
-                    setRejectedView();
-                    return true;
-                default:
-                    Log.d("Info", "DEFAULTING");
-                    return false;
+        bottomNavigationView. setOnItemSelectedListener(listener -> {
+
+
+
+            Log.d("Info", "item id/page: " + listener.getItemId());
+            if(listener.getItemId() == R.id.menu_approved){
+                Log.d("Info", "SHOULD BE SETTING APPROVED");
+                setApprovedView();
+                return true;
+            } else if(listener.getItemId() == R.id.menu_pending){
+                Log.d("Info", "SHOULD BE SETTING PENDING");
+                setPendingView();
+                return true;
+            } else if(listener.getItemId() == R.id.menu_rejected){
+                Log.d("Info", "SHOULD BE SETTING REJECTED");
+                setRejectedView();
+                return true;
+            } else{
+                Log.d("info", "no buttons pressed");
+                return false;
             }
 
         });
@@ -130,4 +131,7 @@ public class AdminApproved extends AppCompatActivity {
     }
 
 }
+
+
+
 
