@@ -170,22 +170,15 @@ public class UpcomingAppointments extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-
-            Log.d("Info", "item id/page: " + item.getItemId());
-            switch (item.getItemId()) {
-                case 2131362091: //int value of the R.id.menu_approved
-                    // Load "Approved" users
-                    Log.d("Info", "switch to approved appointments");
-                    startActivity(new Intent(UpcomingAppointments.this, ApprovedAppointments.class));
-                    return true;
-                case 2131362093: //pending view
-                    Log.d("Info", "switch back to pending appointments");
-                    startActivity(new Intent(UpcomingAppointments.this, UpcomingAppointments.class));
-                    return true;
-                default:
-                    Log.d("Info", "DEFAULTINGGGG");
-                    return false;
+        bottomNavigationView.setOnItemSelectedListener(listener ->{
+            Log.d("info","item id clicked: "+listener.getItemId());
+            if(listener.getItemId() == R.id.menu_approved){
+                //swtiched to approved appointments page
+                Intent intent = new Intent(UpcomingAppointments.this, ApprovedAppointments.class);
+                startActivity(intent);
+                return true;
+            } else{
+                return true;
             }
         });
     }

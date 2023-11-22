@@ -1,10 +1,14 @@
 package com.example.hams;
-
-
+import java.util.Calendar;
+import java.util.Date;
 import android.os.Build;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Appointment {
 
@@ -19,6 +23,7 @@ public class Appointment {
     private String doctorID;
     private String status;
     private String appointmentID;
+    private String isPastAppointment;
 
     public Appointment(){
 
@@ -90,24 +95,31 @@ public class Appointment {
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
-    /*public boolean isPastAppointment() {
-        LocalDate currentDate = LocalDate.now();
-        return (date != null)&&(date.isBefore(currentDate));
-    }*/
-    // Calculate end time assuming a 1-hour duration
-    private String calculateEndTime(String startTime) {
-        // Assuming startTime is in "HH:mm" format and appointments last 1 hour
-        int hour = Integer.parseInt(startTime.split(":")[0]);
-        int minute = Integer.parseInt(startTime.split(":")[1]);
-        hour += 1; // Add one hour for end time
-
-        // Check if adding an hour goes into the next day
-        if (hour == 24) {
-            hour = 0; // Reset hour to '00' if it's 24
+    public boolean isPastAppointment() {
+        if (date == null || date.isEmpty()) {
+            return false; // Handle the case where 'date' is empty or null
         }
 
-        // Return end time in "HH:mm" format
-        return String.format("%02d:%02d", hour, minute);
+        // Assuming 'date' is in the format "YYYY-MM-DD"
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar appointmentDate = Calendar.getInstance();
+
+        try {
+            // Parse the 'date' string into a Date object
+            Date parsedDate = dateFormat.parse(date);
+
+            // Set the Calendar instance to the parsed date
+            appointmentDate.setTime(parsedDate);
+
+            // Get the current date using Calendar
+            Calendar currentDate = Calendar.getInstance();
+
+            // Check if the appointment date is before the current date
+            return appointmentDate.before(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace(); // Handle the parse exception if the date format is incorrect
+            return false;
+        }
     }
 
 }

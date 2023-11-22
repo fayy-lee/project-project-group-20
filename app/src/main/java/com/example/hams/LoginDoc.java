@@ -89,7 +89,7 @@ public class LoginDoc extends AppCompatActivity {
         //this was only for testing purposes so we'd have a set of
         for(int i = 1; i<6; i++){
             Appointment testA = new Appointment();
-            testA.setDate("2022-11-15");
+            testA.setDate("2023-11-30");
             testA.setStartTime("2:00 pm");
             Patient p = new Patient();
             p.setFirstName("Patient " + i);
@@ -98,6 +98,9 @@ public class LoginDoc extends AppCompatActivity {
             testA.setPatientName(p.getFirstName());
             String appointmentId = appointmentsRef.push().getKey();
             testA.setAppointmentID(appointmentId);
+            if(testA.isPastAppointment()){
+                Log.d(" INFO","PAST APPOINTMENT CREATED");
+            }
             appointmentsRef.child(appointmentId).setValue(testA);
 
             upcomingAppointmentList.add(testA);
