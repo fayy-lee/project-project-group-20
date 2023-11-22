@@ -95,6 +95,9 @@ public class Appointment {
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
+    public void setIsPastAppointment(){
+        return;
+    }
     public boolean isPastAppointment() {
         if (date == null || date.isEmpty()) {
             return false; // Handle the case where 'date' is empty or null

@@ -43,7 +43,7 @@ public class PastAppointments extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         DatabaseReference userRef = usersRef.child(user.getUid());
 
-        /*userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //query to get the appointments associated with the right doctor
@@ -60,6 +60,7 @@ public class PastAppointments extends AppCompatActivity {
                             if(appointment != null){
                                 Log.d("info","ispast? "+ appointment.isPastAppointment());
                                 if(appointment.isPastAppointment() == true){
+                                    Log.d(" info"," APPOINTMENT IS PAST!!");
                                     pastAppointmentList.add(appointment);
                                 }
                             }
@@ -81,6 +82,6 @@ public class PastAppointments extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });*/
+        });
     }
 }
