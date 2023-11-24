@@ -13,6 +13,8 @@ public class Shift {
     private String date;
     private String startTime;
     private String endTime;
+    private String doctorID;
+    private String shiftId;
 
     public Shift(){
 
@@ -23,8 +25,17 @@ public class Shift {
         this.setDate(date);
         this.setStartTime(startTime);
         this.setEndTime(endTime);
-    }
+//        this.setDoctorID(doctorID);
+//        this.setShiftID(shiftId);
 
+
+
+    }
+    public void setShiftID(String id){this.shiftId = id;
+    }
+    public String getShiftID(){return shiftId ;}
+
+    public String getdoctorID(){return doctorID ;}
     public String getDate() {
         return date;
     }
@@ -47,6 +58,9 @@ public class Shift {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+    public void setDoctorID(String doctorID) {
+        this.doctorID = doctorID;
     }
 
     public boolean isValidTimeIncrement() {

@@ -38,6 +38,7 @@ public class LoginDoc extends AppCompatActivity {
     DatabaseReference usersRef = MainActivity.usersRef;
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
 
+    DatabaseReference shiftRef = MainActivity.shiftRef;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -108,7 +109,34 @@ public class LoginDoc extends AppCompatActivity {
         }
         Intent intent = new Intent(this, DocView.class);
         startActivity(intent);
+        for(int i = 1; i < 6; i++){
+            Shift testShift = new Shift();
+            testShift.setDate("2023-11-" + (24 + i)); // Example dates
+            testShift.setStartTime("08:00");
+            testShift.setEndTime("16:00");
+
+            // Assuming Shift class has a method to set Doctor ID
+            testShift.setDoctorID(docID);
+
+            // Generate a unique ID for the shift
+            String shiftId = shiftRef.push().getKey();
+            testShift.setShiftID(shiftId);
+
+            // Save the shift to Firebase
+            shiftRef.child(shiftId).setValue(testShift);
+
+            // Add to your local list if needed
+            // upcomingShiftList.add(testShift);
+
+            Log.d("Info", "Shift added: " + i);
+        }
+
+// Proceed to the next activity
+        Intent intentt = new Intent(this, DocView.class);
+        startActivity(intentt);
     }
+
+
     public void openSplash(){
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);

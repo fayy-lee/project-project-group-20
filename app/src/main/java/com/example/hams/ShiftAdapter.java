@@ -1,38 +1,61 @@
 package com.example.hams;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
-public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> {
+public class ShiftAdapter extends RecyclerView.Adapter<shiftviewholder> {
 
-    private List<Shift> shiftList;
-    private OnShiftClickListener onShiftClickListener;
+    List<Shift> shiftList = UpcomingShifts.shiftList;
+    Context context;
 
-    public ShiftAdapter(List<Shift> shiftList, OnShiftClickListener onShiftClickListener) {
+    /*public ShiftAdapter(List<Shift> shiftList, OnShiftClickListener onShiftClickListener) {
         this.shiftList = shiftList;
         this.onShiftClickListener = onShiftClickListener;
+    }*/
+    public ShiftAdapter(Context context, List<Shift> shiftList){
+        this.context = context;
+        this.shiftList = shiftList;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shift, parent, false);
-        return new ViewHolder(view);
+    public shiftviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.upcoming_shift, parent, false);
+        return new shiftviewholder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull shiftviewholder holder, int position) {
         Shift shift = shiftList.get(position);
-        holder.bind(shift);
+        holder.date.setText(shift.getDate());
+        holder.startTime.setText(shift.getStartTime());
+        holder.endTime.setText((shift.getEndTime()));
+
+        holder.cancel.setText("Cancel");
+        holder.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int currentPosition = holder.getAdapterPosition();
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    removeShiftAtPosition(currentPosition);
+                }
+            }
+        });
+
+    }
+    private void removeShiftAtPosition(int position) {
+
+        shiftList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, shiftList.size());
     }
 
     @Override
@@ -40,16 +63,16 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         return shiftList.size();
     }
 
-    public void setShiftList(List<Shift> shiftList) {
+    /*public void setShiftList(List<Shift> shiftList) {
         this.shiftList = shiftList;
         notifyDataSetChanged();
     }
 
     public interface OnShiftClickListener {
         void onShiftClick(int position);
-    }
+    }*/
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    /*public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewDate;
         private TextView textViewTime;
 
@@ -72,5 +95,5 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
                 }
             });
         }
-    }
+    }*/
 }

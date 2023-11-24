@@ -16,7 +16,7 @@
 
 
     <TextView
-        android:layout_width="260dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/startTime"
         android:layout_below="@+id/date"
@@ -26,10 +26,22 @@
         android:layout_marginTop="15dp"
         tools:text="12:00"
         />
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/endTime"
+        android:layout_toEndOf="@+id/startTime"
+        android:layout_below="@id/date"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        tools:text="12:30"
+        />
 
 
     <Button
-        android:id="@+id/reject"
+        android:id="@+id/cancel"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
