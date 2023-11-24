@@ -78,6 +78,8 @@ public class ApprovedAppointmentAdapter extends RecyclerView.Adapter<Appointment
                     Log.d("INFO","appointment status preop: "+appointment.getStatus());
                     //reference the specific appointment
                     DatabaseReference appointmentRef = appointmentSnapshot.getRef();
+
+                    //CHECK HERE IF THE APPOINTMENT IS WITHIN AN HOUR
                     appointmentRef.child("status").setValue("Rejected");
                     approvedAppointmentList.remove(appointment);
                     notifyDataSetChanged();

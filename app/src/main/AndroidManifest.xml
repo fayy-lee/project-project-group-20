@@ -76,9 +76,6 @@
         <activity
             android:name=".UpcomingPatientAppointments"
             android:exported="false" />
-        <activity
-            android:name=".PastPatientAppointments"
-            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

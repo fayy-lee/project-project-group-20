@@ -24,6 +24,7 @@ public class Appointment {
     private String status;
     private String appointmentID;
     private boolean isPastAppointment;
+    private boolean isWithinAnHour;
 
     public Appointment(){
 

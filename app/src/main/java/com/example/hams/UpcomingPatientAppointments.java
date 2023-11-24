@@ -46,20 +46,9 @@ public class UpcomingPatientAppointments extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //query to get the appointments associated with the right doctor
+                //query to get the appointments associated with the right patient
                 String healthCard = snapshot.child("healthCard").getValue(String.class);
 
-                /*for(Appointment a : approvedAppointmentList){
-                    //go through approved list, remove the ones not associated with current patient
-                    Log.d("info","does this appointment match patient? "+a.getPatientID().equals(healthCard));
-                    if(!a.getPatientID().equals(healthCard)){
-
-                        approvedAppointmentList.remove(a);
-                    }
-                }
-                recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
-                recyclerViewPending.setAdapter(new ApprovedAppointmentAdapter(getApplicationContext()));
-                */
                 appointmentsQuery = appointmentsRef.orderByChild("patientID").equalTo(healthCard);
 
                 appointmentsQuery.addValueEventListener(new ValueEventListener() {

@@ -46,7 +46,7 @@ public class PastAppointments extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //query to get the appointments associated with the right doctor
+                //query to get the appointments associated with the right doctor OR patient depending on who's logged in
                 if(snapshot.child("type").getValue(String.class).equals("Doctor")){
                     String employeeNumber = snapshot.child("employeeNumber").getValue(String.class);
                     appointmentsQuery = appointmentsRef.orderByChild("doctorID").equalTo(employeeNumber);
@@ -71,7 +71,6 @@ public class PastAppointments extends AppCompatActivity {
                                     }
                                 }
 
-                                Log.d(" info"," past appointment size: "+pastAppointmentList.size());
                             }
 
                         }
