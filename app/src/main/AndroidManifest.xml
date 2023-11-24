@@ -16,18 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HAMS"
         tools:targetApi="31">
-        <activity
-            android:name=".AdminRejectedFragment"
-            android:exported="false" />
-        <activity
-            android:name=".AdminApprovedFragment"
-            android:exported="false" />
-        <activity
-            android:name=".AdminPendingFragment"
-            android:exported="false" />
-        <activity
-            android:name=".BottomNavMenu"
-            android:exported="false" />
+
         <activity
             android:name=".AdminRejected"
             android:exported="false" />
@@ -36,9 +25,6 @@
             android:exported="false" />
         <activity
             android:name=".AdminApproved"
-            android:exported="false" />
-        <activity
-            android:name=".AdminNavMenu"
             android:exported="false" />
         <activity
             android:name=".LoginAdmin"
@@ -86,6 +72,12 @@
             android:exported="false" />
         <activity
             android:name=".PastAppointments"
+            android:exported="false" />
+        <activity
+            android:name=".UpcomingPatientAppointments"
+            android:exported="false" />
+        <activity
+            android:name=".PastPatientAppointments"
             android:exported="false" />
 
         <activity

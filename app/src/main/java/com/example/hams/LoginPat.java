@@ -1,5 +1,7 @@
 package com.example.hams;
 
+import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,7 @@ public class LoginPat extends AppCompatActivity {
     FirebaseUser fUser;
     private FirebaseDatabase database = MainActivity.database;
     DatabaseReference usersRef = MainActivity.usersRef;
+    DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -78,7 +81,33 @@ public class LoginPat extends AppCompatActivity {
             }
         });
     }
-    public void openLogin(){
+    public void openLogin(String patientID){
+
+        //TODO: when patient functionality is here, make them create the appointments, not in the log in here
+        //TODO: when a patient signs in, get their health card number
+        //this was only for testing purposes so we'd have a set of
+        for(int i = 1; i<6; i++){
+            Appointment testA = new Appointment();
+            testA.setDate("2023-12-01");
+            testA.setStartTime("2:00 pm");
+            Patient p = new Patient();
+            p.setFirstName("Patient " + i);
+            p.setHealthCard("1234567890");
+            testA.setPatient(p);
+            testA.setDoctorID("0000000000");
+            testA.setPatientID(patientID);
+            testA.setStatus("Approved");
+            String appointmentId = appointmentsRef.push().getKey();
+            testA.setAppointmentID(appointmentId);
+
+            if(testA.getIsPastAppointment()){
+                Log.d(" INFO","PAST APPOINTMENT CREATED");
+            }
+            appointmentsRef.child(appointmentId).setValue(testA);
+
+            upcomingAppointmentList.add(testA);
+            Log.d("Info", "appointment added: " + i);
+        }
         Intent intent = new Intent(this, PatView.class);
         startActivity(intent);
     }
@@ -103,7 +132,8 @@ public class LoginPat extends AppCompatActivity {
                         //proceed to login as normal
                         Toast.makeText(LoginPat.this, "Login successful.",
                                 Toast.LENGTH_SHORT).show();
-                        openLogin();
+                        String patientID = snapshot.child("healthCard").getValue(String.class);
+                        openLogin(patientID);
                     } else if(userStatus.equals("Pending")){
                         //give pending message, send back to splash
                         Toast.makeText(LoginPat.this, "Account approval pending.",
@@ -117,7 +147,7 @@ public class LoginPat extends AppCompatActivity {
                     }
                 }else{
                     //there is no data found for that user in that directory
-                    Log.d("Info","no data found");
+                    Log.d("Info","no data snapshot for patient");
                 }
             }
 

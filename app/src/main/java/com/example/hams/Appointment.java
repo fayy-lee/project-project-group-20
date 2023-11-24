@@ -18,7 +18,7 @@ public class Appointment {
     private String startTime;
     private String endTime;
     private Patient patient;
-    private String patientName;
+    private String patientID;
 
     private String doctorID;
     private String status;
@@ -60,11 +60,11 @@ public class Appointment {
     public Patient getPatient() {
         return patient;
     }
-    public String getPatientName(){
-        return patient.getFirstName();
+    public String getPatientID(){
+        return patientID;
     }
-    public void setPatientName(String name){
-        patientName = name;
+    public void setPatientID(String id){
+        patientID = id;
     }
 
     public void setPatient(Patient patient) {

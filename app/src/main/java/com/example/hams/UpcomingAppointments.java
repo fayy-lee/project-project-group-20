@@ -125,10 +125,6 @@ public class UpcomingAppointments extends AppCompatActivity {
                                 } else{
                                     Log.d("info","past appointments only :/");
                                 }
-
-
-
-
                             }
 
                         }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,62 +20,70 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class PastAppointments extends AppCompatActivity {
-    FirebaseAuth mAuth;
+public class UpcomingPatientAppointments extends AppCompatActivity {
     DatabaseReference usersRef = MainActivity.usersRef;
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
-
-    List<Appointment> pastAppointmentList = UpcomingAppointments.pastAppointmentList;
+    List<Appointment> upcomingAppointmentList = UpcomingAppointments.upcomingAppointmentList;
+    List<Appointment> approvedAppointmentList = UpcomingAppointments.approvedAppointmentList;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+    DatabaseReference userRef;
     Query appointmentsQuery;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.past_appointment_page);
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-
+        setContentView(R.layout.patient_appointment_page);
         Context context = this;
+        RecyclerView recyclerViewPending = findViewById(R.id.recyclerView);
 
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        //currently signed in user
-        FirebaseUser user = mAuth.getCurrentUser();
-        DatabaseReference userRef = usersRef.child(user.getUid());
+        user = mAuth.getCurrentUser();
+        userRef = usersRef.child(user.getUid());
+        Log.d("info","approved appointment size: "+approvedAppointmentList.size());
+
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //query to get the appointments associated with the right doctor
-                if(snapshot.child("type").getValue(String.class).equals("Doctor")){
-                    String employeeNumber = snapshot.child("employeeNumber").getValue(String.class);
-                    appointmentsQuery = appointmentsRef.orderByChild("doctorID").equalTo(employeeNumber);
-                } else{
-                    String healthCard = snapshot.child("healthCard").getValue(String.class);
-                    appointmentsQuery = appointmentsRef.orderByChild("patientID").equalTo(healthCard);
-                }
+                String healthCard = snapshot.child("healthCard").getValue(String.class);
 
-                //now read from the query data
+                /*for(Appointment a : approvedAppointmentList){
+                    //go through approved list, remove the ones not associated with current patient
+                    Log.d("info","does this appointment match patient? "+a.getPatientID().equals(healthCard));
+                    if(!a.getPatientID().equals(healthCard)){
+
+                        approvedAppointmentList.remove(a);
+                    }
+                }
+                recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
+                recyclerViewPending.setAdapter(new ApprovedAppointmentAdapter(getApplicationContext()));
+                */
+                appointmentsQuery = appointmentsRef.orderByChild("patientID").equalTo(healthCard);
+
                 appointmentsQuery.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        pastAppointmentList.clear();
+                        approvedAppointmentList.clear();
                         // Iterate through the dataSnapshot to get the appointments
                         for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
                             Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
                             if(appointment != null){
-                                Log.d("info","ispast? "+ appointment.getIsPastAppointment());
-                                if(appointment.getStatus().equals("Approved")){
-                                    if(appointment.getIsPastAppointment()){
-                                        pastAppointmentList.add(appointment);
+                                if(!appointment.getIsPastAppointment()){
+                                    if(appointment.getStatus().equals("Approved")){
+                                        if(appointment.getPatientID().equals(healthCard));
+                                        approvedAppointmentList.add(appointment);
                                     }
                                 }
-
-                                Log.d(" info"," past appointment size: "+pastAppointmentList.size());
                             }
 
                         }
-                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                        recyclerView.setAdapter(new PastAppointmentAdapter(getApplicationContext()));
+                        Log.d("INFO", "approved pat appointment size: "+approvedAppointmentList.size());
+                        //send data to the adapter to bind it to the view
+                        recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
+                        recyclerViewPending.setAdapter(new ApprovedAppointmentAdapter(getApplicationContext()));
+
                     }
 
                     @Override
@@ -84,8 +91,6 @@ public class PastAppointments extends AppCompatActivity {
 
                     }
                 });
-
-
             }
 
             @Override
@@ -93,5 +98,6 @@ public class PastAppointments extends AppCompatActivity {
 
             }
         });
+
     }
 }
