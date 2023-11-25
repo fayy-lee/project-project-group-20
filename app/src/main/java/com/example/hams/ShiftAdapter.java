@@ -1,12 +1,16 @@
 package com.example.hams;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -39,6 +43,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<shiftviewholder> {
         holder.endTime.setText((shift.getEndTime()));
 
         holder.cancel.setText("Cancel");
+
         holder.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,9 +58,37 @@ public class ShiftAdapter extends RecyclerView.Adapter<shiftviewholder> {
     }
     private void removeShiftAtPosition(int position) {
 
-        shiftList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, shiftList.size());
+        if (position < 0 || position >= shiftList.size()) {
+            // Position is invalid, likely due to concurrent modifications or incorrect index
+            Log.e("ShiftAdapter", "Attempted to remove item at invalid position: " + position);
+            return;
+        }
+
+        Shift shiftToRemove = shiftList.get(position);
+
+        // Remove from Firebase
+        if (shiftToRemove.getShiftID() != null) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Shifts").child(shiftToRemove.getShiftID());
+            ref.removeValue().addOnSuccessListener(aVoid -> {
+                // Double-check if the position is still valid
+                if (position < shiftList.size()&& shiftToRemove.equals(shiftList.get(position))) {
+                    // Remove from local list and update adapter
+                    shiftList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, shiftList.size());
+                } else {
+                    Log.e("ShiftAdapter", "Position became invalid after Firebase deletion: " + position);
+                }
+            }).addOnFailureListener(e -> {
+                // Log or handle the error
+                Log.e("Firebase", "Error deleting shift", e);
+            });
+        } else {
+            // If shift doesn't have an ID, it's not synced with Firebase
+            shiftList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, shiftList.size());
+        }
     }
 
     @Override
