@@ -8,6 +8,7 @@ import android.widget.DatePicker;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public  class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
@@ -26,7 +27,10 @@ public  class DatePickerFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date the user picks.
-        String formattedDate = year + "-" + (month + 1) + "-" + day; // Adjust formatting as needed
+        String formattedMonth = String.format(Locale.getDefault(), "%02d", month + 1);
+        String formattedDay = String.format(Locale.getDefault(), "%02d", day);
+
+        String formattedDate = year + "-" + formattedMonth + "-" + formattedDay;
         ((UpcomingShifts)getActivity()).setSelectedDate(formattedDate);
     }
 }

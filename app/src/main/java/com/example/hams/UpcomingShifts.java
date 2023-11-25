@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -44,6 +49,32 @@ public class UpcomingShifts extends AppCompatActivity {
             this.selectedEndTime = time;
         }
     }
+    public boolean isDateInPast(String selectedDateStr) {
+        LocalDate selectedDate = LocalDate.parse(selectedDateStr);
+        LocalDate currentDate = LocalDate.now();
+        return selectedDate.isBefore(currentDate);
+    }
+    public boolean isShiftConflicting(String newStartDateStr, String newStartTimeStr, String newEndTimeStr) {
+        LocalDate newStartDate = LocalDate.parse(newStartDateStr);
+        LocalTime newStartTime = LocalTime.parse(newStartTimeStr);
+        LocalTime newEndTime = LocalTime.parse(newEndTimeStr);
+
+        for (Shift existingShift : shiftList) {
+            LocalDate existingStartDate = LocalDate.parse(existingShift.getDate());
+            LocalTime existingStartTime = LocalTime.parse(existingShift.getStartTime());
+            LocalTime existingEndTime = LocalTime.parse(existingShift.getEndTime());
+
+            if (newStartDate.isEqual(existingStartDate)) {
+                if ((newStartTime.isAfter(existingStartTime) && newStartTime.isBefore(existingEndTime)) ||
+                        (newEndTime.isAfter(existingStartTime) && newEndTime.isBefore(existingEndTime)) ||
+                        (newStartTime.equals(existingStartTime) || newEndTime.equals(existingEndTime))) {
+                    return true; // There is a conflict
+                }
+            }
+        }
+        return false; // No conflict
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +132,20 @@ public class UpcomingShifts extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
+
         new_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (isDateInPast(selectedDate)) {
+                    Toast.makeText(UpcomingShifts.this, "Cannot add shift for a past date.", Toast.LENGTH_LONG).show();
+                    return ;
+                }
+
+                if (isShiftConflicting(selectedDate, selectedStartTime, selectedEndTime)) {
+                    Toast.makeText(UpcomingShifts.this, "Shift conflicts with an existing shift.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 // Check if the date, start time, and end time are not null
                 if (selectedDate != null && selectedStartTime != null && selectedEndTime != null) {
                     // All fields are set, proceed to create a new shift
@@ -132,6 +174,7 @@ public class UpcomingShifts extends AppCompatActivity {
             }
         });
     }
+
 
 }
 
