@@ -2,6 +2,7 @@ package com.example.hams;
 import java.util.Calendar;
 import java.util.Date;
 import android.os.Build;
+import android.util.Log;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -100,27 +101,37 @@ public class Appointment {
         if (date == null || date.isEmpty()) {
             return false; // Handle the case where 'date' is empty or null
         }
-
-        // Assuming 'date' is in the format "YYYY-MM-DD"
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar appointmentDate = Calendar.getInstance();
-
-        try {
-            // Parse the 'date' string into a Date object
-            Date parsedDate = dateFormat.parse(date);
-
-            // Set the Calendar instance to the parsed date
-            appointmentDate.setTime(parsedDate);
-
-            // Get the current date using Calendar
-            Calendar currentDate = Calendar.getInstance();
-
-            // Check if the appointment date is before the current date
-            return appointmentDate.before(currentDate);
-        } catch (ParseException e) {
-            e.printStackTrace(); // Handle the parse exception if the date format is incorrect
-            return false;
+        boolean isPast = false;
+        LocalDate date = LocalDate.parse(this.date);
+        if(date.isBefore(LocalDate.now())){
+            Log.d("info","appointment is in the past according to localDate");
+            isPast = true;
         }
+        //if date isn't past, still check time
+        LocalTime startTime = LocalTime.parse(this.startTime);
+        if(startTime.isBefore(LocalTime.now())){
+            Log.d("info","appointment is in the past according to localTime");
+            isPast = true;
+        }
+        isWithinAnHour = false; //past appointments aren't within an hour
+        return isPast;
+
+
+
+    }
+    public boolean isWithinAnHour(){
+        boolean withinAnHour = false;
+        //get the start date and time of appointment as local date/time objects
+        LocalDate date = LocalDate.parse(this.date);
+        LocalTime startTime = LocalTime.parse(this.startTime);
+        //check if the date is today
+        if(date.isEqual(LocalDate.now())){
+            //check if the time is within an hour
+            if(LocalTime.now().isAfter(startTime.minusHours(1))){
+                withinAnHour = true;
+            }
+        }
+        return withinAnHour;
     }
 
 }

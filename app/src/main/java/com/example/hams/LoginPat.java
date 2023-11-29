@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class LoginPat extends AppCompatActivity {
@@ -88,8 +90,8 @@ public class LoginPat extends AppCompatActivity {
         //this was only for testing purposes so we'd have a set of
         for(int i = 1; i<6; i++){
             Appointment testA = new Appointment();
-            testA.setDate("2023-12-01");
-            testA.setStartTime("2:00 pm");
+            testA.setDate("2023-11-28");
+            testA.setStartTime("08:00");
             Patient p = new Patient();
             p.setFirstName("Patient " + i);
             p.setHealthCard("1234567890");
@@ -99,6 +101,8 @@ public class LoginPat extends AppCompatActivity {
             testA.setStatus("Approved");
             String appointmentId = appointmentsRef.push().getKey();
             testA.setAppointmentID(appointmentId);
+            Log.d("info","current date: "+ LocalDate.now());
+            Log.d("info","current time: "+ LocalTime.now());
 
             if(testA.getIsPastAppointment()){
                 Log.d(" INFO","PAST APPOINTMENT CREATED");

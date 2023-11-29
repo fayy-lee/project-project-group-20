@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ApprovedAppointmentAdapter extends RecyclerView.Adapter<AppointmentViewHolder> {
@@ -80,12 +83,21 @@ public class ApprovedAppointmentAdapter extends RecyclerView.Adapter<Appointment
                     DatabaseReference appointmentRef = appointmentSnapshot.getRef();
 
                     //CHECK HERE IF THE APPOINTMENT IS WITHIN AN HOUR
-                    appointmentRef.child("status").setValue("Rejected");
-                    approvedAppointmentList.remove(appointment);
-                    notifyDataSetChanged();
+                    if(appointment.isWithinAnHour()){
+                        Toast.makeText(context, "Cannot cancel appointment within 60 minutes.",
+                                Toast.LENGTH_LONG).show();
+                        Log.d("INFO","appointment within an hour, cannot be canceled: "+appointment.getStartTime());
 
-                    Log.d("INFO","appointment status postop: "+appointment.getStatus());
+                    } else{
+                        //appointment is more than an hour away
+                        appointmentRef.child("status").setValue("Rejected");
+                        approvedAppointmentList.remove(appointment);
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Appointment cancelled.",
+                                Toast.LENGTH_SHORT).show();
 
+                        Log.d("INFO","appointment canceled: ");
+                    }
 
                 }
             }
