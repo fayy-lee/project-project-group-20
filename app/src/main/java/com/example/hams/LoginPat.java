@@ -1,5 +1,7 @@
 package com.example.hams;
 
+import static com.example.hams.BookAppointments.bookableAppointmentList;
+import static com.example.hams.UpcomingAppointments.approvedAppointmentList;
 import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
 
 import android.content.Intent;
@@ -88,30 +90,29 @@ public class LoginPat extends AppCompatActivity {
         //TODO: when patient functionality is here, make them create the appointments, not in the log in here
         //TODO: when a patient signs in, get their health card number
         //this was only for testing purposes so we'd have a set of
-        for(int i = 1; i<6; i++){
+        /*for(int i = 1; i<6; i++){
             Appointment testA = new Appointment();
-            testA.setDate("2023-11-28");
+            Doctor doctor = new Doctor();
+            doctor.setFirstName("chelseaDoc");
+            doctor.setLastName("brownDoc");
+            doctor.setSpecialties("Family Medicine");
+            doctor.setEmployeeNumber("0713200400");
+            doctor.setPhoneNumber("2899286918");
+
+            testA.setDate("2023-11-30");
             testA.setStartTime("08:00");
-            Patient p = new Patient();
-            p.setFirstName("Patient " + i);
-            p.setHealthCard("1234567890");
-            testA.setPatient(p);
-            testA.setDoctorID("0000000000");
-            testA.setPatientID(patientID);
-            testA.setStatus("Approved");
+            testA.setDoctor(doctor);
+            testA.setDoctorID(doctor.getEmployeeNumber());
+            testA.setPatient(null);
+            testA.setStatus("Not Booked");
+
             String appointmentId = appointmentsRef.push().getKey();
             testA.setAppointmentID(appointmentId);
-            Log.d("info","current date: "+ LocalDate.now());
-            Log.d("info","current time: "+ LocalTime.now());
-
-            if(testA.getIsPastAppointment()){
-                Log.d(" INFO","PAST APPOINTMENT CREATED");
-            }
             appointmentsRef.child(appointmentId).setValue(testA);
 
-            upcomingAppointmentList.add(testA);
-            Log.d("Info", "appointment added: " + i);
-        }
+            bookableAppointmentList.add(testA);
+            Log.d("Info", "bookable appointment list size: " + bookableAppointmentList.size());
+        }*/
         Intent intent = new Intent(this, PatView.class);
         startActivity(intent);
     }

@@ -36,7 +36,7 @@ public class UpcomingShifts extends AppCompatActivity {
     private String selectedEndTime;
     private RecyclerView recyclerView;
     private ShiftAdapter shiftAdapter;
-    public static List<Shift> shiftList;
+    public static List<Shift> shiftList = new ArrayList<>();
     Button new_shift;
 
     public void setSelectedDate(String date) {
@@ -85,7 +85,6 @@ public class UpcomingShifts extends AppCompatActivity {
         new_shift = findViewById(R.id.new_shift);
 
         Context context = this;
-        shiftList = new ArrayList<>();
         shiftAdapter = new ShiftAdapter(this, shiftList);
 
 

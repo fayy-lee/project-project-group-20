@@ -76,6 +76,9 @@
         <activity
             android:name=".UpcomingPatientAppointments"
             android:exported="false" />
+        <activity
+            android:name=".BookAppointments"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

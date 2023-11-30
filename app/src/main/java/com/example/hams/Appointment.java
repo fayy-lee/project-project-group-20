@@ -20,7 +20,7 @@ public class Appointment {
     private String endTime;
     private Patient patient;
     private String patientID;
-
+    private Doctor doctor;
     private String doctorID;
     private String status;
     private String appointmentID;
@@ -29,7 +29,7 @@ public class Appointment {
 
     public Appointment(){
 
-        this.setStatus("Pending");
+        this.setStatus("Not Booked");
     }
 
     public void setStatus(String status) {
@@ -56,6 +56,12 @@ public class Appointment {
 
     public String getDate(){
        return this.date;
+    }
+    public Doctor getDoctor(){
+        return this.doctor;
+    }
+    public String getSpecialty(){
+        return this.doctor.getSpecialties();
     }
 
 
@@ -86,6 +92,9 @@ public class Appointment {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+    public void setDoctor(Doctor doctor){
+        this.doctor = doctor;
     }
     public String getDoctorID() {
         return doctorID;

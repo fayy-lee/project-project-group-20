@@ -1,6 +1,7 @@
 package com.example.hams;
 
 import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
+import static com.example.hams.UpcomingShifts.shiftList;
 
 import android.content.Intent;
 import android.os.Build;
@@ -90,52 +91,18 @@ public class LoginDoc extends AppCompatActivity {
         //TODO: when a patient signs in, get their health card number
         //this was only for testing purposes so we'd have a set of
         for(int i = 1; i<6; i++){
-            Appointment testA = new Appointment();
-            testA.setDate("2022-11-01");
-            testA.setStartTime("2:00 pm");
-            Patient p = new Patient();
-            p.setFirstName("Patient " + i);
-            p.setHealthCard("1234567890");
-            testA.setPatient(p);
-            testA.setDoctorID(docID);
-            testA.setPatientID(p.getHealthCard());
-            String appointmentId = appointmentsRef.push().getKey();
-            testA.setAppointmentID(appointmentId);
-            if(testA.getIsPastAppointment()){
-                Log.d(" INFO","PAST APPOINTMENT CREATED");
-            }
-            appointmentsRef.child(appointmentId).setValue(testA);
+            Shift s = new Shift("2023-12-01","14:00","20:00");
+            s.setDoctorID(docID);
+            String shiftID = shiftRef.push().getKey();
+            s.setShiftID(shiftID);
+            shiftRef.child(shiftID).setValue(s);
 
-            upcomingAppointmentList.add(testA);
-            Log.d("Info", "appointment added: " + i);
+            shiftList.add(s);
+            Log.d("Info", "shift added: " + i);
         }
         Intent intent = new Intent(this, DocView.class);
         startActivity(intent);
-        for(int i = 1; i < 6; i++){
-            Shift testShift = new Shift();
-            testShift.setDate("2023-11-" + (24 + i)); // Example dates
-            testShift.setStartTime("08:00");
-            testShift.setEndTime("16:00");
 
-            // Assuming Shift class has a method to set Doctor ID
-            testShift.setDoctorID(docID);
-
-            // Generate a unique ID for the shift
-            String shiftId = shiftRef.push().getKey();
-            testShift.setShiftID(shiftId);
-
-            // Save the shift to Firebase
-            shiftRef.child(shiftId).setValue(testShift);
-
-            // Add to your local list if needed
-            // upcomingShiftList.add(testShift);
-
-            Log.d("Info", "Shift added: " + i);
-        }
-
-// Proceed to the next activity
-        Intent intentt = new Intent(this, DocView.class);
-        startActivity(intentt);
     }
 
 

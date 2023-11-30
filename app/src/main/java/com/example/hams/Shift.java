@@ -15,6 +15,7 @@ public class Shift {
     private String endTime;
     private String doctorID;
     private String shiftId;
+    private boolean validTimeIncrement;
 
     public Shift(){
 
