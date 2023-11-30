@@ -1,4 +1,5 @@
 package com.example.hams;
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 
@@ -7,11 +8,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,15 +43,28 @@ public class SignUpDoc extends AppCompatActivity {
     FirebaseUser fUser;
     FirebaseDatabase database = MainActivity.database;
     DatabaseReference usersRef = MainActivity.usersRef;
+    private Spinner specialtySpinner;
+    private ArrayAdapter<String> specialtyAdapter;
 
+
+
+
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up_doc);
+        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.specialtyAutoComplete);
+        String[] specialties = {"family medicine", "internal medicine", "pediatrics", "obstetrics", "gynecology"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, specialties);
+        autoCompleteTextView.setAdapter(adapter);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
 
         //initialize editText elements
         button = (Button) findViewById(R.id.button);
@@ -57,11 +75,13 @@ public class SignUpDoc extends AppCompatActivity {
         phone = findViewById(R.id.phone);
         employee = findViewById(R.id.employee);
         add = findViewById(R.id.address);
-        special = findViewById(R.id.special);
+
         button.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 //read input values
+                String specialty = autoCompleteTextView.getText().toString();
                 String emailAddress = String.valueOf(email.getText());
                 String password = String.valueOf(pass.getText());
                 String firstname = String.valueOf(first.getText());
@@ -69,15 +89,19 @@ public class SignUpDoc extends AppCompatActivity {
                 String phoneNo = String.valueOf(phone.getText());
                 String employeeNo = String.valueOf(employee.getText());
                 String address = String.valueOf(add.getText());
-                String specialties = String.valueOf(special.getText());
+
                 //submit registration info
                 clearErrors();
 
                 // Perform validations
-                if (firstname.isEmpty() || lastname.isEmpty() || phoneNo.isEmpty() || employeeNo.isEmpty() || address.isEmpty() || emailAddress.isEmpty() || specialties.isEmpty()) {
+                if (firstname.isEmpty() || lastname.isEmpty() || phoneNo.isEmpty() || employeeNo.isEmpty() || address.isEmpty() || emailAddress.isEmpty() || TextUtils.isEmpty(specialty) ) {
                     // Show error message if any field is empty
+                    autoCompleteTextView.setError("Please select a specialty");
                     showInputError("All fields are required");
-                } else if (!isValidName(firstname)) {
+
+
+
+                }else if (!isValidName(firstname)) {
                     // Show error message if first name contains non-alphabetic characters
                     showInputError("Invalid first name");
                 } else if (!isValidName(lastname)) {
@@ -107,7 +131,7 @@ public class SignUpDoc extends AppCompatActivity {
                                 doctor.setAddress(address);
                                 doctor.setPhoneNumber(phoneNo);
                                 doctor.setEmployeeNumber(employeeNo);
-                                doctor.setSpecialties(specialties);
+                                doctor.setSpecialties(specialty);
                                 doctor.setUserName(emailAddress);
                                 doctor.setPassWord(password);
                                 doctor.setStatus("Pending");
@@ -140,7 +164,7 @@ public class SignUpDoc extends AppCompatActivity {
                 if (phone.getText().toString().trim().isEmpty()|| phone.getText().toString().length() != 10 || !TextUtils.isDigitsOnly(phone.getText().toString())) {
                     phone.setError(errorMessage);
                 }
-                if (employee.getText().toString().trim().isEmpty()|| special.getText().toString().length() != 10 || !TextUtils.isDigitsOnly(special.getText().toString())) {
+                if (employee.getText().toString().trim().isEmpty() ) {
                     employee.setError(errorMessage);
                 }
                 if (add.getText().toString().trim().isEmpty()) {
@@ -149,9 +173,7 @@ public class SignUpDoc extends AppCompatActivity {
                 if (email.getText().toString().trim().isEmpty()|| !isValidEmail(email.getText().toString().trim())) {
                     email.setError(errorMessage);
                 }
-                if (special.getText().toString().trim().isEmpty() ) {
-                    special.setError(errorMessage);
-                }
+
             }
 
             private void clearErrors() {
@@ -162,7 +184,7 @@ public class SignUpDoc extends AppCompatActivity {
                 employee.setError(null);
                 add.setError(null);
                 email.setError(null);
-                special.setError(null);
+
             }
             private boolean isValidPhoneNumber(String phoneNumber) {
 
