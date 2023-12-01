@@ -1,10 +1,12 @@
 package com.example.hams;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class PastAppointments extends AppCompatActivity {
 
     List<Appointment> pastAppointmentList = UpcomingAppointments.pastAppointmentList;
     Query appointmentsQuery;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -42,6 +45,17 @@ public class PastAppointments extends AppCompatActivity {
         //currently signed in user
         FirebaseUser user = mAuth.getCurrentUser();
         DatabaseReference userRef = usersRef.child(user.getUid());
+
+        //button functionality
+        button = (Button) findViewById(R.id.rate);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent =  new Intent(PastAppointments.this, rateAppointments.class);
+                startActivity(intent);
+            }
+        });
+
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,10 +97,7 @@ public class PastAppointments extends AppCompatActivity {
 
                     }
                 });
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
