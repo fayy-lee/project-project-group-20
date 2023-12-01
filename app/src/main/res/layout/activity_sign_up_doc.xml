@@ -21,6 +21,7 @@
         android:textSize="40sp"
         android:fontFamily="@font/bangers"
         android:layout_marginTop="-20dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,18 +93,23 @@
                 android:layout_height="wrap_content"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Specialties"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            android:hint="Specialty"
+            app:endIconMode="dropdown_menu">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/special"
+            <AutoCompleteTextView
+                android:id="@+id/specialtyAutoComplete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="none"
+                android:editable="false"
+                android:textCursorDrawable="@null"/>
+
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
 
