@@ -2,6 +2,8 @@ package com.example.hams;
 
 
 
+import static com.example.hams.MainActivity.appointmentsRef;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -88,7 +90,7 @@ public class BookAppointments extends AppCompatActivity {
                                         //beginning of shift,
                                         LocalTime aStart = LocalTime.parse(shift.getStartTime());
                                         LocalTime aEnd;
-                                        while(aStart.isBefore(LocalTime.parse(shift.getEndTime()))){
+                                        while(aStart.isBefore(java.time.LocalTime.parse(shift.getEndTime()))){
                                             aEnd = aStart.plusMinutes(30);
                                             //add the details of the appointment now
                                             //increment start and end at the end of the loop
@@ -97,14 +99,17 @@ public class BookAppointments extends AppCompatActivity {
                                             a.setDate(shift.getDate());
                                             a.setStartTime(aStart.toString());
                                             a.setEndTime(aEnd.toString());
+                                            a.setPatient(new Patient());
                                             String appointmentId = appointmentsRef.push().getKey();
                                             a.setAppointmentID(appointmentId);
+                                            a.setStatus("Not Booked");
                                             appointmentsRef.child(appointmentId).setValue(a);
                                             Log.d("info","bookable appt created: "+a.getDate()+" "+a.getStartTime()+" with doctor: "+a.getDoctor().getEmployeeNumber());
                                             bookableAppointmentList.add(a);
 
                                             aStart = aEnd; //next appointment starts at the end of the previous one
                                         }
+
 
                                     }
                                     Log.d("info","bookable appointments size: "+bookableAppointmentList.size());
@@ -135,115 +140,5 @@ public class BookAppointments extends AppCompatActivity {
                 // Do nothing here
             }
         });
-        /*for(int i = 1; i<6; i++){
-            Appointment testA = new Appointment();
-            testA.setDate("2023-11-30");
-            testA.setStartTime("08:00");
-            Patient p = new Patient();
-            p.setFirstName("Patient " + i);
-            p.setHealthCard("1234567890");
-            testA.setPatient(p);
-            testA.setDoctorID("0000000000");
-            testA.setPatientID(p.getHealthCard());
-            testA.setStatus("Approved");
-            String appointmentId = appointmentsRef.push().getKey();
-            testA.setAppointmentID(appointmentId);
-
-            appointmentsRef.child(appointmentId).setValue(testA);
-
-            approvedAppointmentList.add(testA);
-            Log.d("Info", "appointment added: " + i);
-        }*/
-
-
-        /*
-        shiftList = new ArrayList<>();
-        shiftAdapter = new ShiftAdapter(this, shiftList);
-
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(shiftAdapter);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Shifts");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                shiftList.clear(); // Clear existing data
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Shift shift = snapshot.getValue(Shift.class);
-                    if (shift != null) {
-                        shift.setShiftID(snapshot.getKey());
-                        shiftList.add(shift);
-                    }
-                }
-                shiftAdapter.notifyDataSetChanged(); // Refresh RecyclerView
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle possible errors
-            }
-        });
-
-
-        findViewById(R.id.pickstartTime).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new TimePickerFragment().show(getSupportFragmentManager(), "starttimePicker");
-            }
-        });
-        findViewById(R.id.pickendTime).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new TimePickerFragment().show(getSupportFragmentManager(), "endtimePicker");
-            }
-        });
-
-        findViewById(R.id.pickDate).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerFragment newFragment = new DatePickerFragment();
-                newFragment.show(getSupportFragmentManager(), "datePicker");
-            }
-        });
-
-        new_shift.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (isDateInPast(selectedDate)) {
-                    Toast.makeText(UpcomingShifts.this, "Cannot add shift for a past date.", Toast.LENGTH_LONG).show();
-                    return ;
-                }
-
-                if (isShiftConflicting(selectedDate, selectedStartTime, selectedEndTime)) {
-                    Toast.makeText(UpcomingShifts.this, "Shift conflicts with an existing shift.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                // Check if the date, start time, and end time are not null
-                if (selectedDate != null && selectedStartTime != null && selectedEndTime != null) {
-                    // All fields are set, proceed to create a new shift
-                    Shift newShift = new Shift(selectedDate, selectedStartTime, selectedEndTime);
-                    DatabaseReference shiftsRef = FirebaseDatabase.getInstance().getReference().child("Shifts");
-
-                    // Generate a unique key for the new shift
-                    String shiftId = shiftsRef.push().getKey();
-                    newShift.setShiftID(shiftId);
-                    shiftsRef.child(shiftId).setValue(newShift).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            // Successfully written to Firebase, the ValueEventListener will update the UI
-                            Log.d("Firebase", "Shift added successfully");
-                        } else {
-                            // Handle failure
-                            Log.e("Firebase", "Failed to add shift", task.getException());
-                        }
-                    });
-
-
-                } else {
-                    // One or more fields are null, handle this case appropriately
-                    Log.e("NewShiftError", "Cannot add shift: Date, start time, or end time is missing");
-                    // Optionally, show a user-friendly message or prompt to input missing data
-                }
-            }
-        });*/
     }
 }

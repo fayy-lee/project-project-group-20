@@ -25,7 +25,8 @@ public class Appointment {
     private String status;
     private String appointmentID;
     private boolean isPastAppointment;
-    private boolean isWithinAnHour;
+    private boolean withinAnHour;
+    private String specialty;
 
     public Appointment(){
 
@@ -65,6 +66,7 @@ public class Appointment {
     }
 
 
+
     public Patient getPatient() {
         return patient;
     }
@@ -95,6 +97,7 @@ public class Appointment {
     }
     public void setDoctor(Doctor doctor){
         this.doctor = doctor;
+        this.doctorID = doctor.getEmployeeNumber();
     }
     public String getDoctorID() {
         return doctorID;
@@ -110,26 +113,35 @@ public class Appointment {
         if (date == null || date.isEmpty()) {
             return false; // Handle the case where 'date' is empty or null
         }
-        boolean isPast = false;
-        LocalDate date = LocalDate.parse(this.date);
-        if(date.isBefore(LocalDate.now())){
-            Log.d("info","appointment is in the past according to localDate");
-            isPast = true;
-        }
+
         //if date isn't past, still check time
         LocalTime startTime = LocalTime.parse(this.startTime);
-        if(startTime.isBefore(LocalTime.now())){
-            Log.d("info","appointment is in the past according to localTime");
-            isPast = true;
+        LocalDate date = LocalDate.parse(this.date);
+        LocalDateTime appointmentDateTime = LocalDateTime.of(date, startTime);
+
+        if(appointmentDateTime.isBefore(LocalDateTime.now())){
+            Log.d("info","appointment is in the past according to localDateTime");
+            return true;
+        }else{
+            return false;
         }
-        isWithinAnHour = false; //past appointments aren't within an hour
-        return isPast;
+        /*
+        if(date.isBefore(LocalDate.now())){
+            Log.d("info","appointment is in the past according to localDate");
+            return true;
+        } else if(startTime.isBefore(LocalTime.now())){
+            Log.d("info","appointment is in the past according to localTime");
+            Log.d("info","appt date: "+ startTime + " VS current date: "+LocalTime.now());
+            return true;
+        }
+        withinAnHour = false; //past appointments aren't within an hour
+        return false;*/
 
 
 
     }
     public boolean isWithinAnHour(){
-        boolean withinAnHour = false;
+        withinAnHour = false;
         //get the start date and time of appointment as local date/time objects
         LocalDate date = LocalDate.parse(this.date);
         LocalTime startTime = LocalTime.parse(this.startTime);
@@ -141,6 +153,10 @@ public class Appointment {
             }
         }
         return withinAnHour;
+    }
+    public void setWithinAnHour(Boolean w){
+        //android studio/firebase complained about this so here we are
+        this.withinAnHour = w;
     }
 
 }

@@ -54,6 +54,9 @@ public class UpcomingPatientAppointments extends AppCompatActivity {
                 appointmentsQuery.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(!snapshot.exists()){
+                            Log.d("info","nothing in query");
+                        }
                         approvedAppointmentList.clear();
                         // Iterate through the dataSnapshot to get the appointments
                         for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {

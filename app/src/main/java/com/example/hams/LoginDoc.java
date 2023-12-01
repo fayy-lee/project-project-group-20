@@ -90,8 +90,8 @@ public class LoginDoc extends AppCompatActivity {
         //TODO: when patient functionality is here, make them create the appointments, not in the log in here
         //TODO: when a patient signs in, get their health card number
         //this was only for testing purposes so we'd have a set of
-        for(int i = 1; i<6; i++){
-            Shift s = new Shift("2023-12-01","14:00","20:00");
+        /*for(int i = 1; i<6; i++){
+            Shift s = new Shift("2023-12-01","12:00","14:00");
             s.setDoctorID(docID);
             String shiftID = shiftRef.push().getKey();
             s.setShiftID(shiftID);
@@ -99,7 +99,7 @@ public class LoginDoc extends AppCompatActivity {
 
             shiftList.add(s);
             Log.d("Info", "shift added: " + i);
-        }
+        }*/
         Intent intent = new Intent(this, DocView.class);
         startActivity(intent);
 

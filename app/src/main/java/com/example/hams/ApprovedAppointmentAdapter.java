@@ -88,7 +88,7 @@ public class ApprovedAppointmentAdapter extends RecyclerView.Adapter<Appointment
                                 Toast.LENGTH_LONG).show();
                         Log.d("INFO","appointment within an hour, cannot be canceled: "+appointment.getStartTime());
 
-                    } else{
+                    }else{
                         //appointment is more than an hour away
                         appointmentRef.child("status").setValue("Rejected");
                         approvedAppointmentList.remove(appointment);

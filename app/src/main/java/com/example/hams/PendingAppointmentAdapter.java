@@ -39,6 +39,9 @@ public class PendingAppointmentAdapter extends RecyclerView.Adapter<AppointmentV
 
         holder.date.setText(a.getDate());
         holder.startTime.setText(a.getStartTime());
+        if(a.getPatient() == null){
+            Log.d("info","PENDING ADAPTER SAYS PATIENT IS NULL");
+        }
         holder.firstName.setText(a.getPatient().getFirstName());
         holder.lastName.setText(a.getPatient().getLastName());
         holder.email.setText(a.getPatient().getUserName());

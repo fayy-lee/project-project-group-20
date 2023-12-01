@@ -1,7 +1,21 @@
 package com.example.hams;
 
-import android.os.Build;
+import static com.example.hams.BookAppointments.bookableAppointmentList;
+import static com.example.hams.MainActivity.appointmentsRef;
+import static com.example.hams.MainActivity.usersRef;
 
+import android.os.Build;
+import android.util.Log;
+
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +28,10 @@ public class Shift {
     private String startTime;
     private String endTime;
     private String doctorID;
+    private Doctor doctor;
     private String shiftId;
     private boolean validTimeIncrement;
+    public List<Appointment> shiftAppointments;
 
     public Shift(){
 
@@ -28,15 +44,16 @@ public class Shift {
         this.setEndTime(endTime);
 //        this.setDoctorID(doctorID);
 //        this.setShiftID(shiftId);
-
-
-
     }
     public void setShiftID(String id){this.shiftId = id;
     }
     public String getShiftID(){return shiftId ;}
 
-    public String getdoctorID(){return doctorID ;}
+    public String getdoctorID(){return doctorID;}
+    public Doctor getDoctor(){return doctor;}
+    public void setDoctor(Doctor doc){
+        doctor = doc;
+    }
     public String getDate() {
         return date;
     }
