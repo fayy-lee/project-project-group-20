@@ -1,5 +1,10 @@
 package com.example.hams;
 
+import static com.example.hams.MainActivity.appointmentsRef;
+import static com.example.hams.MainActivity.usersRef;
+import static com.example.hams.UpcomingAppointments.approvedAppointmentList;
+import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +14,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,10 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class PendingAppointmentAdapter extends RecyclerView.Adapter<AppointmentViewHolder> {
+public class PendingAppointmentAdapter extends RecyclerView.Adapter<AppointmentViewHolder>{
     List<Appointment> upcompingAppointmentsList = UpcomingAppointments.upcomingAppointmentList;
     Context context;
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
+    DatabaseReference shiftsRef = MainActivity.shiftRef;
 
     public PendingAppointmentAdapter(Context context){
         this.context = context;
@@ -39,9 +47,6 @@ public class PendingAppointmentAdapter extends RecyclerView.Adapter<AppointmentV
 
         holder.date.setText(a.getDate());
         holder.startTime.setText(a.getStartTime());
-        if(a.getPatient() == null){
-            Log.d("info","PENDING ADAPTER SAYS PATIENT IS NULL");
-        }
         holder.firstName.setText(a.getPatient().getFirstName());
         holder.lastName.setText(a.getPatient().getLastName());
         holder.email.setText(a.getPatient().getUserName());
@@ -75,22 +80,40 @@ public class PendingAppointmentAdapter extends RecyclerView.Adapter<AppointmentV
 
     //method to approve status in firebase
     public void approveAppointment(int position){
+        //push the appointment to the Appointments section once it's confirmed
         Appointment appointment = upcompingAppointmentsList.get(position);
-
-        //find the specific appointment by its ID
-        Query appointmentsQuery = appointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID());
-        Log.d("INFO", "Appointment for id: "+appointment.getAppointmentID());
-        appointmentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        appointment.setStatus("Approved");
+        appointmentsRef.child(appointment.getAppointmentID()).setValue(appointment);
+        Query shiftsQuery = shiftsRef.orderByChild("doctorID").equalTo(appointment.getDoctorID());
+        shiftsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    Log.d("INFO","nothing in the query");
-                }
-                Log.d("INFO","in on data change method");
-                for(DataSnapshot appointmentSnapshot : snapshot.getChildren()){
-                    //reference the specific appointment
-                    DatabaseReference appointmentRef = appointmentSnapshot.getRef();
-                    appointmentRef.child("status").setValue("Approved");
+                for(DataSnapshot shiftSnapshot : snapshot.getChildren()){
+                    //for each shift, now we search its shiftAppointments for the one with appointmentID
+                    String shiftId = shiftSnapshot.getKey();
+                    DatabaseReference shiftAppointmentsRef = shiftsRef.child(shiftId).child("shiftAppointments");
+                    shiftAppointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            //now change the status of the appointment
+                            for(DataSnapshot shiftAppointmentSnapshot : snapshot.getChildren()){
+                                //reference the specific appointment
+                                DatabaseReference appointmentRef = shiftAppointmentSnapshot.getRef();
+
+                                //change status, remove from bookable options
+                                appointmentRef.child("status").setValue("Approved");
+
+                                upcomingAppointmentList.remove(appointment);
+                                notifyDataSetChanged();
+                                approvedAppointmentList.add(appointment);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                 }
             }
@@ -100,29 +123,42 @@ public class PendingAppointmentAdapter extends RecyclerView.Adapter<AppointmentV
 
             }
         });
+
 
     }
 
     public void rejectAppointment(int position){
         Appointment appointment = upcompingAppointmentsList.get(position);
-
-        //find the specific appointment by its ID
-        Query appointmentsQuery = appointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID());
-        Log.d("INFO", "Appointment for id: "+appointment.getAppointmentID());
-        appointmentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        appointment.setStatus("Approved");
+        Query shiftsQuery = shiftsRef.orderByChild("doctorID").equalTo(appointment.getDoctorID());
+        shiftsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    Log.d("INFO","nothing in the query");
-                }
-                Log.d("INFO","in on data change method");
-                for(DataSnapshot appointmentSnapshot : snapshot.getChildren()){
-                    Log.d("INFO","appointment status preop: "+appointment.getStatus());
-                    //reference the specific appointment
-                    DatabaseReference appointmentRef = appointmentSnapshot.getRef();
-                    appointmentRef.child("status").setValue("Rejected");
+                for(DataSnapshot shiftSnapshot : snapshot.getChildren()){
+                    //for each shift, now we search its shiftAppointments for the one with appointmentID
+                    String shiftId = shiftSnapshot.getKey();
+                    DatabaseReference shiftAppointmentsRef = shiftsRef.child(shiftId).child("shiftAppointments");
+                    shiftAppointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            //now change the status of the appointment
+                            for(DataSnapshot shiftAppointmentSnapshot : snapshot.getChildren()){
+                                //reference the specific appointment
+                                DatabaseReference appointmentRef = shiftAppointmentSnapshot.getRef();
 
-                    Log.d("INFO","appointment status postop: "+appointment.getStatus());
+                                //change status, remove from bookable options
+                                appointmentRef.child("status").setValue("Rejected");
+
+                                upcomingAppointmentList.remove(appointment);
+                                notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                 }
             }
@@ -134,4 +170,7 @@ public class PendingAppointmentAdapter extends RecyclerView.Adapter<AppointmentV
         });
 
     }
+
+
+
 }

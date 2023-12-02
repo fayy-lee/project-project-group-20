@@ -22,6 +22,7 @@ import java.util.List;
 
 public class UpcomingPatientAppointments extends AppCompatActivity {
     DatabaseReference usersRef = MainActivity.usersRef;
+    DatabaseReference shiftsRef = MainActivity.shiftRef;
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
     List<Appointment> upcomingAppointmentList = UpcomingAppointments.upcomingAppointmentList;
     List<Appointment> approvedAppointmentList = UpcomingAppointments.approvedAppointmentList;

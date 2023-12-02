@@ -15,36 +15,53 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.LocalDate;
 
 
-public class Shift {
+public class Shift implements Serializable {
     private String date;
     private String startTime;
     private String endTime;
     private String doctorID;
-    private Doctor doctor;
+    private transient Doctor doctor;
     private String shiftId;
     private boolean validTimeIncrement;
-    public List<Appointment> shiftAppointments;
+    public transient List<Appointment> shiftAppointments;
 
     public Shift(){
 
     }
 
+    public Shift(String date, String startTime, String endTime, Doctor doctor) {
+        new Shift();
+        this.setDate(date);
+        this.setStartTime(startTime);
+        this.setEndTime(endTime);
+        this.shiftAppointments = new ArrayList<>();
+        try{
+            this.setDoctorID(doctor.getEmployeeNumber());
+            this.setDoctor(doctor);
+        }catch(NullPointerException e){
+            Log.d("Info","Doctor is null??");
+        }
+        //generateShiftAppointments();
+        //this.setDoctorID(doctor.getEmployeeNumber());
+        //doctor.shifts.add(this);
+    }
     public Shift(String date, String startTime, String endTime) {
         new Shift();
         this.setDate(date);
         this.setStartTime(startTime);
         this.setEndTime(endTime);
-//        this.setDoctorID(doctorID);
-//        this.setShiftID(shiftId);
     }
+
     public void setShiftID(String id){this.shiftId = id;
     }
     public String getShiftID(){return shiftId ;}
@@ -121,5 +138,40 @@ public class Shift {
         }
 
         return true;
+    }
+    public List<Appointment> getShiftAppointments(){
+        return shiftAppointments;
+    }
+    public void generateShiftAppointments(){
+        //create a list of appointments available within the shift
+        //associate with the doctor of the shift, patient is initially null but will be assigned when booked
+
+        java.time.LocalTime aStart = java.time.LocalTime.parse(this.getStartTime());
+        java.time.LocalTime aEnd;
+        while(aStart.isBefore(java.time.LocalTime.parse(this.getEndTime()))){
+            aEnd = aStart.plusMinutes(30);
+            //add the details of the appointment now
+            //increment start and end at the end of the loop
+            Appointment a = new Appointment();
+            a.setDoctor(doctor);
+            a.setDoctorID(doctorID);
+            a.setDate(this.getDate());
+            a.setStartTime(aStart.toString());
+            a.setEndTime(aEnd.toString());
+            a.setPatient(new Patient());
+            String appointmentId = appointmentsRef.push().getKey();
+            a.setAppointmentID(appointmentId);
+            a.setStatus("Not Booked");
+            a.setSpecialty(doctor.getSpecialties());
+
+            appointmentsRef.child(appointmentId).setValue(a);
+            shiftAppointments.add(a);
+            Log.d("info","bookable appt created: "+a.getDate()+" "+a.getStartTime()+" with doctor: "+a.getDoctor().getEmployeeNumber());
+
+
+            //bookableAppointmentList.add(a);
+
+            aStart = aEnd; //next appointment starts at the end of the previous one
+        }
     }
 }

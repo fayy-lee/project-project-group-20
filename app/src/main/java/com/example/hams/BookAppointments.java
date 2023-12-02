@@ -74,56 +74,43 @@ public class BookAppointments extends AppCompatActivity {
                 bookableDoctorsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        //now for each doctor, create an appointment for every time slot in each shift
-                        bookableAppointmentList.clear();
-                        for(DataSnapshot doctorSnapshot : snapshot.getChildren()){
-                            Doctor doctor = doctorSnapshot.getValue(Doctor.class);
-                            //got all the shifts for that doctor
-                            shiftQuery = shiftRef.orderByChild("doctorID").equalTo(doctor.getEmployeeNumber());
-                            //now turn each shift into an appointment
-                            shiftQuery.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for(DataSnapshot shiftSnapshot : snapshot.getChildren()){
-                                        Shift shift = shiftSnapshot.getValue(Shift.class);
-                                        //now implement 30 min increments for the shifts
-                                        //beginning of shift,
-                                        LocalTime aStart = LocalTime.parse(shift.getStartTime());
-                                        LocalTime aEnd;
-                                        while(aStart.isBefore(java.time.LocalTime.parse(shift.getEndTime()))){
-                                            aEnd = aStart.plusMinutes(30);
-                                            //add the details of the appointment now
-                                            //increment start and end at the end of the loop
-                                            Appointment a = new Appointment();
-                                            a.setDoctor(doctor);
-                                            a.setDate(shift.getDate());
-                                            a.setStartTime(aStart.toString());
-                                            a.setEndTime(aEnd.toString());
-                                            a.setPatient(new Patient());
-                                            String appointmentId = appointmentsRef.push().getKey();
-                                            a.setAppointmentID(appointmentId);
-                                            a.setStatus("Not Booked");
-                                            appointmentsRef.child(appointmentId).setValue(a);
-                                            Log.d("info","bookable appt created: "+a.getDate()+" "+a.getStartTime()+" with doctor: "+a.getDoctor().getEmployeeNumber());
-                                            bookableAppointmentList.add(a);
+                        if(!snapshot.exists()){
+                            Log.d("info","no doctors with the specialty: "+selectedSpecialty);
+                        }else {
+                            //now for each doctor, create an appointment for every time slot in each shift
+                            bookableAppointmentList.clear();
 
-                                            aStart = aEnd; //next appointment starts at the end of the previous one
+                            for (DataSnapshot doctorSnapshot : snapshot.getChildren()) {
+                                Doctor doctor = doctorSnapshot.getValue(Doctor.class);
+                                //got all the shifts for that doctor
+                                shiftQuery = shiftRef.orderByChild("doctorID").equalTo(doctor.getEmployeeNumber());
+                                //now turn each shift into an appointment
+                                shiftQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        Log.d("info","shift snap size: "+snapshot.getChildrenCount());
+
+                                        for (DataSnapshot shiftSnapshot : snapshot.getChildren()) {
+
+                                            Shift shift = shiftSnapshot.getValue(Shift.class);
+                                            for(Appointment a : shift.getShiftAppointments()){
+                                                if(a.getStatus().equals("Not Booked")){
+                                                    bookableAppointmentList.add(a);
+                                                }
+                                            }
                                         }
+                                        Log.d("info", "bookable appointments size: " + bookableAppointmentList.size());
+                                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                                        recyclerView.setAdapter(new BookAppointmentAdapter(getApplicationContext()));
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
 
                                     }
-                                    Log.d("info","bookable appointments size: "+bookableAppointmentList.size());
-                                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                                    recyclerView.setAdapter(new BookAppointmentAdapter(getApplicationContext()));
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
+                                });
+                            }
                         }
-
 
                     }
 

@@ -62,7 +62,10 @@ public class Appointment {
         return this.doctor;
     }
     public String getSpecialty(){
-        return this.doctor.getSpecialties();
+        return this.specialty;
+    }
+    public void setSpecialty(String specialty){
+        this.specialty = specialty;
     }
 
 
@@ -97,7 +100,7 @@ public class Appointment {
     }
     public void setDoctor(Doctor doctor){
         this.doctor = doctor;
-        this.doctorID = doctor.getEmployeeNumber();
+        //this.doctorID = doctor.getEmployeeNumber();
     }
     public String getDoctorID() {
         return doctorID;

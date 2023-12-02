@@ -26,7 +26,21 @@ public class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time the user picks.
-        String formattedTime = hourOfDay + ":" + minute; // Adjust formatting as needed
+        String hourString;
+        String minuteString;
+        if(hourOfDay < 10){
+            //concatenate string with a 0 in front
+            hourString = "0" + String.valueOf(hourOfDay);
+        }else{
+            hourString = String.valueOf(hourOfDay);
+        }
+
+        if(minute < 10){
+            minuteString = "0" + String.valueOf(minute);
+        }else{
+            minuteString = String.valueOf(minute);
+        }
+        String formattedTime = hourString + ":" + minuteString; // Adjust formatting as needed
         ((UpcomingShifts)getActivity()).setSelectedTime(formattedTime, this.getTag());
     }
 
