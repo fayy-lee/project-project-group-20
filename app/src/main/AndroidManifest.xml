@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HAMS"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ratePastAppointments"
+            android:exported="false" />
         <activity
             android:name=".AdminRejected"
             android:exported="false" />
@@ -62,11 +64,9 @@
         <activity
             android:name=".Dashboard"
             android:exported="false" />
-
         <activity
             android:name=".UpcomingAppointments"
             android:exported="false" />
-
         <activity
             android:name=".ApprovedAppointments"
             android:exported="false" />
@@ -79,7 +79,6 @@
         <activity
             android:name=".BookAppointments"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -89,9 +88,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UpcomingShifts">
-
-        </activity>
+        <activity android:name=".UpcomingShifts"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

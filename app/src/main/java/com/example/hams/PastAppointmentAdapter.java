@@ -1,7 +1,6 @@
 package com.example.hams;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -22,7 +17,6 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<AppointmentView
     Context context;
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
     List<Appointment> pastAppointmentList = UpcomingAppointments.pastAppointmentList;
-
     public PastAppointmentAdapter(Context context){
         this.context = context;
     }
@@ -52,5 +46,7 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<AppointmentView
     public int getItemCount() {
         return pastAppointmentList.size();
     }
+
+
 
 }
