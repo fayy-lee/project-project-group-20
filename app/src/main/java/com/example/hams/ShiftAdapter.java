@@ -1,6 +1,7 @@
 package com.example.hams;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 public class ShiftAdapter extends RecyclerView.Adapter<shiftviewholder> {
+    List<Shift> shiftAppointments ;
 
     List<Shift> shiftList = UpcomingShifts.shiftList;
     Context context;
@@ -41,7 +43,13 @@ public class ShiftAdapter extends RecyclerView.Adapter<shiftviewholder> {
         holder.date.setText(shift.getDate());
         holder.startTime.setText(shift.getStartTime());
         holder.endTime.setText((shift.getEndTime()));
-
+        if (!shift.canCancelShift()) {
+            holder.cancel.setEnabled(false);
+            holder.cancel.setBackgroundColor(Color.GRAY); // Change the text color to gray if the doctor can't cancel the button
+        } else {
+            holder.cancel.setEnabled(true);
+            holder.cancel.setTextColor(Color.BLACK); // Change back to the default text color
+        }
         holder.cancel.setText("Cancel");
 
         holder.cancel.setOnClickListener(new View.OnClickListener() {

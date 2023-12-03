@@ -62,6 +62,7 @@ public class Shift implements Serializable {
         this.setEndTime(endTime);
     }
 
+
     public void setShiftID(String id){this.shiftId = id;
     }
     public String getShiftID(){return shiftId ;}
@@ -99,7 +100,6 @@ public class Shift implements Serializable {
     }
 
     public boolean isValidTimeIncrement() {
-
         LocalTime start = LocalTime.parse(startTime);
         LocalTime end = LocalTime.parse(endTime);
 
@@ -139,9 +139,30 @@ public class Shift implements Serializable {
 
         return true;
     }
+
+    public boolean canCancelShift() {
+        // Check if there are any appointments in the shift
+        if (hasAppointments()) {
+            // Check if any appointment is in a status that allows cancellation (e.g., not approved)
+            for (Appointment appointment : shiftAppointments) {
+                if (!appointment.getStatus().equals("Approved")) {
+                    return true; // Doctor can cancel the shift
+                }
+            }
+            return false; // All appointments are approved, doctor cannot cancel the shift
+        } else {
+            // No appointments, doctor can cancel the shift
+            return true;
+        }
+    }
+
+    private boolean hasAppointments() {
+        return shiftAppointments != null && !shiftAppointments.isEmpty();
+    }
     public List<Appointment> getShiftAppointments(){
         return shiftAppointments;
     }
+
     public void generateShiftAppointments(){
         //create a list of appointments available within the shift
         //associate with the doctor of the shift, patient is initially null but will be assigned when booked
@@ -161,7 +182,7 @@ public class Shift implements Serializable {
             a.setPatient(new Patient());
             String appointmentId = appointmentsRef.push().getKey();
             a.setAppointmentID(appointmentId);
-            a.setStatus("Not Booked");
+            a.setStatus("Approved");
             a.setSpecialty(doctor.getSpecialties());
 
             appointmentsRef.child(appointmentId).setValue(a);

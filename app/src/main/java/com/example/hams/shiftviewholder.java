@@ -20,6 +20,5 @@ public class shiftviewholder extends RecyclerView.ViewHolder {
         //reference buttons too, so they'll have text on them lol
         cancel = itemView.findViewById(R.id.cancel);
 
-
     }
 }
