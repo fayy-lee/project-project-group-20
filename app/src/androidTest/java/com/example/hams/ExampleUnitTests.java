@@ -1,10 +1,9 @@
 package com.example.hams;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ExampleUnitTest {
+public class ExampleUnitTests {
     private Doctor doctorTest;
     private Patient patientTest;
     private Admin adminTest;
