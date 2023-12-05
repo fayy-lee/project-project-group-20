@@ -5,4 +5,13 @@
     <string name="medimanage" />
     <string name="password">Password</string>
     <string name="username">Username</string>
+    <string name="select_specialty" />
+    <string-array name="specialties_array">
+        <item>Pediatrics</item>
+        <item>Family Medicine</item>
+        <item>Internal Medicine</item>
+        <item>Obstetrics</item>
+        <item>Gynecology</item>
+    </string-array>
+
 </resources>

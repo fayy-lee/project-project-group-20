@@ -1,5 +1,9 @@
 package com.example.hams;
 
+
+
+import static com.example.hams.MainActivity.shiftRef;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -37,6 +41,7 @@ public class UpcomingAppointments extends AppCompatActivity {
 
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
     DatabaseReference usersRef = MainActivity.usersRef;
+    DatabaseReference shiftsRef = MainActivity.shiftRef;
     public static List<Appointment> upcomingAppointmentList = new ArrayList<>(); //holds all the upcoming appointments
     //fills with only the specific doctor's upcoming appointments using firebase query
     public static List<Appointment> approvedAppointmentList = new ArrayList<>();
@@ -44,6 +49,7 @@ public class UpcomingAppointments extends AppCompatActivity {
 
 
     Query appointmentsQuery;
+    Query shiftsQuery;
     Button acceptAll;
     FirebaseAuth mAuth;
     @Override
@@ -96,55 +102,46 @@ public class UpcomingAppointments extends AppCompatActivity {
 
 
         //strictly to read the name of the current doctor
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                upcomingAppointmentList.clear();
                 //query to get the appointments associated with the right doctor
                 String employeeNumber = snapshot.child("employeeNumber").getValue(String.class);
                 Log.d("Info","DOCTOR NAME: "+employeeNumber);
-                appointmentsQuery = appointmentsRef.orderByChild("doctorID").equalTo(employeeNumber);
-
-
-                appointmentsQuery.addValueEventListener(new ValueEventListener() {
+                //appointmentsQuery = appointmentsRef.orderByChild("doctorID").equalTo(employeeNumber);
+                shiftsQuery = shiftsRef.orderByChild("doctorID").equalTo(employeeNumber);
+                shiftsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        upcomingAppointmentList.clear();
-                        approvedAppointmentList.clear();
-                        pastAppointmentList.clear();
-                        // Iterate through the dataSnapshot to get the appointments
-                        for (DataSnapshot appointmentSnapshot : snapshot.getChildren()) {
-                            Appointment appointment = appointmentSnapshot.getValue(Appointment.class);
-                            if(appointment != null){
-                                /*if(appointment.isPastAppointment()){
-                                    Log.d("info", "past appointment date: "+appointment.getDate());
-                                    pastAppointmentList.add(appointment);
-                                }*/
-                                    if(appointment.getStatus().equals("Pending")){
-                                        upcomingAppointmentList.add(appointment);
-
-                                    } else if(appointment.getStatus().equals("Approved")){
-                                        approvedAppointmentList.add(appointment);
-
-                                    }
-
-
-
-                            }
-
+                        if(!snapshot.exists()){
+                            Log.d("info","shift query empty");
                         }
-                        Log.d("INFO", "pending size: "+upcomingAppointmentList.size());
-                        Log.d("INFO","approved size: "+approvedAppointmentList.size());
-                        //send data to the adapter to bind it to the view
+                        for (DataSnapshot shiftSnapshot : snapshot.getChildren()) {
+                            Shift shift = shiftSnapshot.getValue(Shift.class);
+                            for(Appointment a : shift.getShiftAppointments()){
+                                Log.d("info","shift appointment status: "+a.getStatus());
+                                if(a.getStatus().equals("Pending")){
+                                    Log.d("info","adding to list");
+                                    upcomingAppointmentList.add(a);
+                                }
+                            }
+                        }
+                        Log.d("info", "upcoming appointments size: " + upcomingAppointmentList.size());
                         recyclerViewPending.setLayoutManager(new LinearLayoutManager(context));
                         recyclerViewPending.setAdapter(new PendingAppointmentAdapter(getApplicationContext()));
 
                     }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
+
+
+
             }
 
             @Override
@@ -174,44 +171,51 @@ public class UpcomingAppointments extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-
-            Log.d("Info", "item id/page: " + item.getItemId());
-            switch (item.getItemId()) {
-                case 2131362091: //int value of the R.id.menu_approved
-                    // Load "Approved" users
-                    Log.d("Info", "switch to approved appointments");
-                    startActivity(new Intent(UpcomingAppointments.this, ApprovedAppointments.class));
-                    return true;
-                case 2131362093: //pending view
-                    Log.d("Info", "switch back to pending appointments");
-                    startActivity(new Intent(UpcomingAppointments.this, UpcomingAppointments.class));
-                    return true;
-                default:
-                    Log.d("Info", "DEFAULTINGGGG");
-                    return false;
+        bottomNavigationView.setOnItemSelectedListener(listener ->{
+            Log.d("info","item id clicked: "+listener.getItemId());
+            if(listener.getItemId() == R.id.menu_approved){
+                //swtiched to approved appointments page
+                Intent intent = new Intent(UpcomingAppointments.this, ApprovedAppointments.class);
+                startActivity(intent);
+                return true;
+            } else{
+                return true;
             }
         });
     }
 
     public void approveAll(){
         for(Appointment appointment : upcomingAppointmentList){
-
-            approvedAppointmentList.add(appointment);
-            //find the specific appointment by its ID
-            Query appointmentsQuery = appointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID());
-            Log.d("INFO", "Appointment for id: "+appointment.getAppointmentID());
-            appointmentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            appointment.setStatus("Approved");
+            Query shiftsQuery = shiftsRef.orderByChild("doctorID").equalTo(appointment.getDoctorID());
+            shiftsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(!snapshot.exists()){
-                        Log.d("INFO","nothing in the query");
-                    }
-                    Log.d("INFO","in on data change method");
-                    for(DataSnapshot appointmentSnapshot : snapshot.getChildren()){
-                        //reference the specific appointment
-                        DatabaseReference appointmentRef = appointmentSnapshot.getRef();
-                        appointmentRef.child("status").setValue("Approved");
+                    for(DataSnapshot shiftSnapshot : snapshot.getChildren()){
+                        //for each shift, now we search its shiftAppointments for the one with appointmentID
+                        String shiftId = shiftSnapshot.getKey();
+                        DatabaseReference shiftAppointmentsRef = shiftsRef.child(shiftId).child("shiftAppointments");
+                        shiftAppointmentsRef.orderByChild("appointmentID").equalTo(appointment.getAppointmentID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                //now change the status of the appointment
+                                for(DataSnapshot shiftAppointmentSnapshot : snapshot.getChildren()){
+                                    //reference the specific appointment
+                                    DatabaseReference appointmentRef = shiftAppointmentSnapshot.getRef();
+
+                                    //change status, remove from bookable options
+                                    appointmentRef.child("status").setValue("Approved");
+
+                                    upcomingAppointmentList.remove(appointment);
+                                    approvedAppointmentList.add(appointment);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                     }
                 }

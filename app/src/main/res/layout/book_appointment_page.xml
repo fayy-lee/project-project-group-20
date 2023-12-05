@@ -15,67 +15,61 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:textSize="30dp"
-        android:text="Upcoming Shifts" />
+        android:text="Find Appointment Slots" />
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/title"
+        android:textSize="15dp"
+        android:text="Once your appointment is accepted, it will appear on the Upcoming Appointments page." />
 
+
+    <Spinner
+        android:id="@+id/spinnerSpecialties"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subtitle"
+        android:prompt="@string/select_specialty"/>
 
     <Button
         android:id="@+id/pickDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_marginLeft="-148dp"
-
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/pickstartTime"
+        android:layout_below="@+id/spinnerSpecialties"
+        android:layout_margin="10dp"
         android:text="Pick date" />
 
     <Button
         android:id="@+id/pickstartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_alignLeft="@id/title"
-        android:layout_marginLeft="-4dp"
-        android:layout_marginTop="63dp"
-        android:layout_marginEnd="20dp"
+        android:layout_toRightOf="@+id/pickDate"
+        android:layout_below="@id/spinnerSpecialties"
+        android:layout_margin="10dp"
         android:text="Pick start time" />
 
     <Button
-        android:id="@+id/pickendTime"
+        android:id="@+id/search"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="63dp"
-        android:layout_marginEnd="20dp"
-        android:layout_toRightOf="@id/pickstartTime"
-        android:text="Pick end time" />
-
-    <Button
-        android:id="@+id/new_shift"
-        android:layout_width="120dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/spinnerSpecialties"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="#0DCD20"
         android:textSize="15dp"
-        android:text="New Shift" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="UPCOMING SHIFTS"
-        android:layout_below="@+id/recyclerview"
-        />
+        android:text="Search" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/new_shift"
+        android:layout_below="@+id/search"
         android:layout_marginStart="10dp"
         android:layout_marginTop="77dp"
         android:layout_marginEnd="10dp"

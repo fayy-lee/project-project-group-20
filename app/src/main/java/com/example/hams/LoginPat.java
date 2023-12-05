@@ -1,5 +1,9 @@
 package com.example.hams;
 
+import static com.example.hams.BookAppointments.bookableAppointmentList;
+import static com.example.hams.UpcomingAppointments.approvedAppointmentList;
+import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class LoginPat extends AppCompatActivity {
@@ -32,6 +38,7 @@ public class LoginPat extends AppCompatActivity {
     FirebaseUser fUser;
     private FirebaseDatabase database = MainActivity.database;
     DatabaseReference usersRef = MainActivity.usersRef;
+    DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -78,7 +85,34 @@ public class LoginPat extends AppCompatActivity {
             }
         });
     }
-    public void openLogin(){
+    public void openLogin(String patientID){
+
+        //TODO: when patient functionality is here, make them create the appointments, not in the log in here
+        //TODO: when a patient signs in, get their health card number
+        //this was only for testing purposes so we'd have a set of
+        /*for(int i = 1; i<6; i++){
+            Appointment testA = new Appointment();
+            Doctor doctor = new Doctor();
+            doctor.setFirstName("chelseaDoc");
+            doctor.setLastName("brownDoc");
+            doctor.setSpecialties("Family Medicine");
+            doctor.setEmployeeNumber("0713200400");
+            doctor.setPhoneNumber("2899286918");
+
+            testA.setDate("2023-11-30");
+            testA.setStartTime("08:00");
+            testA.setDoctor(doctor);
+            testA.setDoctorID(doctor.getEmployeeNumber());
+            testA.setPatient(null);
+            testA.setStatus("Not Booked");
+
+            String appointmentId = appointmentsRef.push().getKey();
+            testA.setAppointmentID(appointmentId);
+            appointmentsRef.child(appointmentId).setValue(testA);
+
+            bookableAppointmentList.add(testA);
+            Log.d("Info", "bookable appointment list size: " + bookableAppointmentList.size());
+        }*/
         Intent intent = new Intent(this, PatView.class);
         startActivity(intent);
     }
@@ -103,7 +137,8 @@ public class LoginPat extends AppCompatActivity {
                         //proceed to login as normal
                         Toast.makeText(LoginPat.this, "Login successful.",
                                 Toast.LENGTH_SHORT).show();
-                        openLogin();
+                        String patientID = snapshot.child("healthCard").getValue(String.class);
+                        openLogin(patientID);
                     } else if(userStatus.equals("Pending")){
                         //give pending message, send back to splash
                         Toast.makeText(LoginPat.this, "Account approval pending.",
@@ -117,7 +152,7 @@ public class LoginPat extends AppCompatActivity {
                     }
                 }else{
                     //there is no data found for that user in that directory
-                    Log.d("Info","no data found");
+                    Log.d("Info","no data snapshot for patient");
                 }
             }
 

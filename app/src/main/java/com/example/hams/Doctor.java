@@ -1,26 +1,24 @@
 package com.example.hams;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Doctor extends User{
-    String firstName;
-    String lastName;
-    String phoneNumber;
-    String address;
-    String employeeNumber;
-    String specialties;
-    ArrayList<Appointment> upcomingAppointments;
-    ArrayList<Appointment> pastAppointments;
-    ArrayList<Shift> shifts;
-    Boolean autoApproveAppointments;
+public class Doctor extends User implements Serializable {
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String address;
+    private String employeeNumber;
+    private String specialties;
+    private ArrayList<Appointment> upcomingAppointments;
+    private ArrayList<Appointment> pastAppointments;
+    public ArrayList<Shift> shifts;
+    private Boolean autoApproveAppointments;
 
     public Doctor(){
         super();
-        upcomingAppointments = new ArrayList<>();
-        pastAppointments= new ArrayList<>();
         shifts = new ArrayList<>();
         setAutoApproveAppointments(false);
-
     }
     /*public Doctor(String user, String pass, String first, String last,
                 String phone, String address,
@@ -96,12 +94,7 @@ public class Doctor extends User{
     }
     // making an list of pst and upcoming appointments.
 
-    public ArrayList<Appointment> getUpcomingAppointments(){
-        return upcomingAppointments;
-    };
-    public ArrayList<Appointment> getPastAppointments(){
-        return pastAppointments;
-    };
+
     public ArrayList<Shift> getShifts(){
         return shifts;
     }

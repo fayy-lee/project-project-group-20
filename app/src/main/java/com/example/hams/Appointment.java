@@ -1,29 +1,36 @@
 package com.example.hams;
-
-
+import java.util.Calendar;
+import java.util.Date;
 import android.os.Build;
+import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.format.DateTimeFormatter;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Appointment {
 
-    private LocalDate date;
+    private String date;
+    //private String dateString;
 
     private String startTime;
     private String endTime;
     private Patient patient;
-    private String patientName;
-
+    private String patientID;
+    private Doctor doctor;
     private String doctorID;
     private String status;
     private String appointmentID;
+    private boolean isPastAppointment;
+    private boolean withinAnHour;
+    private String specialty;
 
     public Appointment(){
 
-        this.setStatus("Pending");
+        this.setStatus("Not Booked");
     }
 
     public void setStatus(String status) {
@@ -40,29 +47,37 @@ public class Appointment {
     }
 
     public void setDate(String dateString){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Parse the string into a LocalDate using the defined formatter
-        LocalDate localDate = LocalDate.parse(dateString, formatter);
-        this.date = localDate;
+        LocalDate localDate = LocalDate.parse(dateString, formatter);*/
+
+        this.date = dateString;
     }
 
     public String getDate(){
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateString = this.date.format(formatter);
-        return dateString;
+       return this.date;
     }
+    public Doctor getDoctor(){
+        return this.doctor;
+    }
+    public String getSpecialty(){
+        return this.specialty;
+    }
+    public void setSpecialty(String specialty){
+        this.specialty = specialty;
+    }
+
 
 
     public Patient getPatient() {
         return patient;
     }
-    public String getPatientName(){
-        return patient.getFirstName();
+    public String getPatientID(){
+        return patientID;
     }
-    public void setPatientName(String name){
-        patientName = name;
+    public void setPatientID(String id){
+        patientID = id;
     }
 
     public void setPatient(Patient patient) {
@@ -83,6 +98,10 @@ public class Appointment {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+    public void setDoctor(Doctor doctor){
+        this.doctor = doctor;
+        //this.doctorID = doctor.getEmployeeNumber();
+    }
     public String getDoctorID() {
         return doctorID;
     }
@@ -90,24 +109,57 @@ public class Appointment {
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
-    public boolean isPastAppointment() {
-        LocalDate currentDate = LocalDate.now();
-        return date.isBefore(currentDate);
+    public void setIsPastAppointment(){
+        return;
     }
-    // Calculate end time assuming a 1-hour duration
-    private String calculateEndTime(String startTime) {
-        // Assuming startTime is in "HH:mm" format and appointments last 1 hour
-        int hour = Integer.parseInt(startTime.split(":")[0]);
-        int minute = Integer.parseInt(startTime.split(":")[1]);
-        hour += 1; // Add one hour for end time
-
-        // Check if adding an hour goes into the next day
-        if (hour == 24) {
-            hour = 0; // Reset hour to '00' if it's 24
+    public boolean getIsPastAppointment() {
+        if (date == null || date.isEmpty()) {
+            return false; // Handle the case where 'date' is empty or null
         }
 
-        // Return end time in "HH:mm" format
-        return String.format("%02d:%02d", hour, minute);
+        //if date isn't past, still check time
+        LocalTime startTime = LocalTime.parse(this.startTime);
+        LocalDate date = LocalDate.parse(this.date);
+        LocalDateTime appointmentDateTime = LocalDateTime.of(date, startTime);
+
+        if(appointmentDateTime.isBefore(LocalDateTime.now())){
+            Log.d("info","appointment is in the past according to localDateTime");
+            return true;
+        }else{
+            return false;
+        }
+        /*
+        if(date.isBefore(LocalDate.now())){
+            Log.d("info","appointment is in the past according to localDate");
+            return true;
+        } else if(startTime.isBefore(LocalTime.now())){
+            Log.d("info","appointment is in the past according to localTime");
+            Log.d("info","appt date: "+ startTime + " VS current date: "+LocalTime.now());
+            return true;
+        }
+        withinAnHour = false; //past appointments aren't within an hour
+        return false;*/
+
+
+
+    }
+    public boolean isWithinAnHour(){
+        withinAnHour = false;
+        //get the start date and time of appointment as local date/time objects
+        LocalDate date = LocalDate.parse(this.date);
+        LocalTime startTime = LocalTime.parse(this.startTime);
+        //check if the date is today
+        if(date.isEqual(LocalDate.now())){
+            //check if the time is within an hour
+            if(LocalTime.now().isAfter(startTime.minusHours(1))){
+                withinAnHour = true;
+            }
+        }
+        return withinAnHour;
+    }
+    public void setWithinAnHour(Boolean w){
+        //android studio/firebase complained about this so here we are
+        this.withinAnHour = w;
     }
 
 }

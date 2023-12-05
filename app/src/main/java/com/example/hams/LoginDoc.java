@@ -1,6 +1,7 @@
 package com.example.hams;
 
 import static com.example.hams.UpcomingAppointments.upcomingAppointmentList;
+import static com.example.hams.UpcomingShifts.shiftList;
 
 import android.content.Intent;
 import android.os.Build;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class LoginDoc extends AppCompatActivity {
 
@@ -36,6 +39,7 @@ public class LoginDoc extends AppCompatActivity {
     DatabaseReference usersRef = MainActivity.usersRef;
     DatabaseReference appointmentsRef = MainActivity.appointmentsRef;
 
+    DatabaseReference shiftRef = MainActivity.shiftRef;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -84,27 +88,24 @@ public class LoginDoc extends AppCompatActivity {
     public void openLogin(String docID){
 
         //TODO: when patient functionality is here, make them create the appointments, not in the log in here
+        //TODO: when a patient signs in, get their health card number
         //this was only for testing purposes so we'd have a set of
-        for(int i = 1; i<6; i++){
-            Appointment testA = new Appointment();
-            testA.setDate("2022-11-15");
-            testA.setStartTime("2:00 pm");
-            Patient p = new Patient();
-            p.setFirstName("Patient " + i);
-            testA.setPatient(p);
-            testA.setDoctorID(docID);
-            testA.setPatientName(p.getFirstName());
-            String appointmentId = appointmentsRef.push().getKey();
-            Log.d("Info", "appointment ID: " + appointmentId);
-            testA.setAppointmentID(appointmentId);
-            appointmentsRef.child(appointmentId).setValue(testA);
+        /*for(int i = 1; i<6; i++){
+            Shift s = new Shift("2023-12-01","12:00","14:00");
+            s.setDoctorID(docID);
+            String shiftID = shiftRef.push().getKey();
+            s.setShiftID(shiftID);
+            shiftRef.child(shiftID).setValue(s);
 
-            upcomingAppointmentList.add(testA);
-            Log.d("Info", "appointment added: " + i);
-        }
+            shiftList.add(s);
+            Log.d("Info", "shift added: " + i);
+        }*/
         Intent intent = new Intent(this, DocView.class);
         startActivity(intent);
+
     }
+
+
     public void openSplash(){
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
@@ -130,7 +131,9 @@ public class LoginDoc extends AppCompatActivity {
                         Toast.makeText(LoginDoc.this, "Login successful.",
                                 Toast.LENGTH_SHORT).show();
                         //TODO: remove the parameter from login once patients can create appointments
-                        openLogin(snapshot.child("employeeNumber").getValue(String.class));
+                        String docID = snapshot.child("employeeNumber").getValue(String.class);
+
+                        openLogin(docID);
                     } else if(userStatus.equals("Pending")){
                         //give pending message, send back to splash
                         Toast.makeText(LoginDoc.this, "Account approval pending.",

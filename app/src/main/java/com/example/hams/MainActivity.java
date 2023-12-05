@@ -17,13 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.jakewharton.threetenabp.AndroidThreeTen;
 
 public class MainActivity extends AppCompatActivity {
     public static FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static DatabaseReference dbReference = database.getReference();
     public static DatabaseReference usersRef = dbReference.child("Users");
     public static DatabaseReference appointmentsRef = dbReference.child("Appointments");
+    public static DatabaseReference shiftRef = dbReference.child("Shifts");
 
     private static int SPLASH_SCREEN = 5000;
 
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        AndroidThreeTen.init(this);
 
 
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
