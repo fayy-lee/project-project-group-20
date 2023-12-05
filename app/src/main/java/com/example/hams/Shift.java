@@ -145,11 +145,11 @@ public class Shift implements Serializable {
         if (hasAppointments()) {
             // Check if any appointment is in a status that allows cancellation (e.g., not approved)
             for (Appointment appointment : shiftAppointments) {
-                if (!appointment.getStatus().equals("Approved")) {
-                    return true; // Doctor can cancel the shift
+                if (appointment.getStatus().equals("Approved")) {
+                    return false; // Doctor can cancel the shift
                 }
             }
-            return false; // All appointments are approved, doctor cannot cancel the shift
+            return true; // All appointments are approved, doctor cannot cancel the shift
         } else {
             // No appointments, doctor can cancel the shift
             return true;
@@ -182,7 +182,7 @@ public class Shift implements Serializable {
             a.setPatient(new Patient());
             String appointmentId = appointmentsRef.push().getKey();
             a.setAppointmentID(appointmentId);
-            a.setStatus("Approved");
+            a.setStatus("Not Booked");
             a.setSpecialty(doctor.getSpecialties());
 
             appointmentsRef.child(appointmentId).setValue(a);

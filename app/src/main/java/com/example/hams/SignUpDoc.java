@@ -57,7 +57,7 @@ public class SignUpDoc extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up_doc);
         AutoCompleteTextView autoCompleteTextView = findViewById(R.id.specialtyAutoComplete);
-        String[] specialties = {"family medicine", "internal medicine", "pediatrics", "obstetrics", "gynecology"};
+        String[] specialties = {"Family Medicine", "Internal Medicine", "Pediatrics", "Obstetrics", "Gynecology"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, specialties);
         autoCompleteTextView.setAdapter(adapter);

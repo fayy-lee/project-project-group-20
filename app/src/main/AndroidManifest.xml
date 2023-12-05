@@ -17,7 +17,7 @@
         android:theme="@style/Theme.HAMS"
         tools:targetApi="31">
         <activity
-            android:name=".ratePastAppointments"
+            android:name=".rateAppointments"
             android:exported="false" />
         <activity
             android:name=".AdminRejected"
