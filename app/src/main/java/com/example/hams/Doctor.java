@@ -104,6 +104,9 @@ public class Doctor extends User implements Serializable {
     }
     public void addPastAppoitment (Appointment appointment){
     }
+    public ArrayList<Appointment> getUpcomingAppointments(){
+        return upcomingAppointments;
+    }
 
 
 }
